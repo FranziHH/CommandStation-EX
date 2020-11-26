@@ -67,6 +67,8 @@ public:
   static void setThrottle(uint16_t cab, uint8_t tSpeed, bool tDirection);
   static uint8_t getThrottleSpeed(int cab);
   static bool getThrottleDirection(int cab);
+  static unsigned long getThrottleFunction(int cab);
+  static void setThrottleFunction(int cab, unsigned long func);
   static void writeCVByteMain(int cab, int cv, byte bValue);
   static void writeCVBitMain(int cab, int cv, byte bNum, bool bValue);
   static void setFunction(int cab, byte fByte, byte eByte);
@@ -93,7 +95,8 @@ public:
   static void forgetLoco(int cab); // removes any speed reminders for this loco
   static void forgetAllLocos();    // removes all speed reminders
   static void displayCabList(Print *stream);
-
+  static void displayThrottleCabList(Print * stream);
+  
   static __FlashStringHelper *getMotorShieldName();
 
 private:

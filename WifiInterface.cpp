@@ -33,6 +33,8 @@ const char  PROGMEM IPD_SEARCH[] = "+IPD";
 const unsigned long LOOP_TIMEOUT = 2000;
 bool WifiInterface::connected = false;
 Stream * WifiInterface::wifiStream;
+bool WifiInterface::AccessPoint = true;
+char WifiInterface::macTail[6];
 
 #ifndef WIFI_CONNECT_TIMEOUT
 // Tested how long it takes to FAIL an unknown SSID on firmware 1.7.4.
@@ -71,27 +73,32 @@ bool WifiInterface::setup(long serial_link_speed,
   (void) hostname;
   (void) port;
 #endif  
-  
-#if NUM_SERIAL > 0
-  Serial1.begin(serial_link_speed);
-  wifiUp = setup(Serial1, wifiESSID, wifiPassword, hostname, port);
-#endif
 
-// Other serials are tried, depending on hardware.
-#if NUM_SERIAL > 1
-  if (wifiUp == WIFI_NOAT)
-  {
-    Serial2.begin(serial_link_speed);
-    wifiUp = setup(Serial2, wifiESSID, wifiPassword, hostname, port);
-  }
-#endif
+#ifdef WIFI_SERIAL
+  WIFI_SERIAL.begin(serial_link_speed);    // BAUD rate of your Wifi chip/shield 
+  wifiUp = setup(WIFI_SERIAL, wifiESSID, wifiPassword, hostname, port);
+#else
+  #if NUM_SERIAL > 0
+    Serial1.begin(serial_link_speed);
+    wifiUp = setup(Serial1, wifiESSID, wifiPassword, hostname, port);
+  #endif
   
-#if NUM_SERIAL > 2
-  if (wifiUp == WIFI_NOAT)
-  {
-    Serial3.begin(serial_link_speed);
-    wifiUp = setup(Serial3, wifiESSID, wifiPassword, hostname, port);
-  }
+  // Other serials are tried, depending on hardware.
+  #if NUM_SERIAL > 1
+    if (wifiUp == WIFI_NOAT)
+    {
+      Serial2.begin(serial_link_speed);
+      wifiUp = setup(Serial2, wifiESSID, wifiPassword, hostname, port);
+    }
+  #endif
+    
+  #if NUM_SERIAL > 2
+    if (wifiUp == WIFI_NOAT)
+    {
+      Serial3.begin(serial_link_speed);
+      wifiUp = setup(Serial3, wifiESSID, wifiPassword, hostname, port);
+    }
+  #endif
 #endif
 
   if (wifiUp == WIFI_NOAT) // here and still not AT commands found
@@ -108,15 +115,19 @@ bool WifiInterface::setup(long serial_link_speed,
 }
 
 wifiSerialState WifiInterface::setup(Stream & setupStream,  const __FlashStringHelper* SSid, const __FlashStringHelper* password,
-				     const __FlashStringHelper* hostname,  int port) {
+             const __FlashStringHelper* hostname,  int port) {
   wifiSerialState wifiState;
   static uint8_t ntry = 0;
+  char ipAddress[15];   //  ip address extraction
   ntry++;
 
   wifiStream = &setupStream;
 
   DIAG(F("\n++ Wifi Setup Try %d ++\n"), ntry);
-
+  #ifdef OLED_128x64
+    LCD(4, F("WiFi: init ..."));
+  #endif
+  
   wifiState = setup2( SSid, password, hostname,  port);
 
   if (wifiState == WIFI_NOAT) {
@@ -131,6 +142,28 @@ wifiSerialState WifiInterface::setup(Stream & setupStream,  const __FlashStringH
 
     
   DIAG(F("\n++ Wifi Setup %S ++\n"), wifiState == WIFI_CONNECTED ? F("CONNECTED") : F("DISCONNECTED"));
+  #ifdef OLED_128x64
+  LCD(4,F("WiFi: %S"), wifiState == WIFI_CONNECTED ? AccessPoint ? F("AccessPoint") : F("Client") : F("failed"));
+  if (wifiState == WIFI_CONNECTED) {
+    StringFormatter::send(wifiStream, F("AT+CIFSR\r\n"));
+    if (checkForOK(5000, AccessPoint ? (const char*) F("+CIFSR:APIP,\"") : (const char*) F("+CIFSR:STAIP,\""), true,false)) {
+      // Copy 17 byte ip address  
+        for (int i=0; i<17;i++) {
+          while(!wifiStream->available());
+          char c = wifiStream->read();
+          if (c == '"') {
+            ipAddress[i] = '\0';
+            i = 17; //break
+          } else {
+            ipAddress[i] = c;
+            StringFormatter::printEscape(ipAddress[i]);
+          }
+        }    
+    }
+    LCD(5,F(" %s:%d"), ipAddress, port);
+    if (AccessPoint) LCD(6,F("DCCEX_x:PASS_%s"), macTail);
+  }
+  #endif
   return wifiState;
 }
 
@@ -140,7 +173,7 @@ wifiSerialState WifiInterface::setup(Stream & setupStream,  const __FlashStringH
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
 wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __FlashStringHelper* password,
-				      const __FlashStringHelper* hostname, int port) {
+              const __FlashStringHelper* hostname, int port) {
   bool ipOK = false;
   bool oldCmd = false;
 
@@ -168,6 +201,7 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
 
 #ifdef DONT_TOUCH_WIFI_CONF
   DIAG(F("\nDONT_TOUCH_WIFI_CONF was set: Using existing config\n"));
+  AccessPoint = false;
 #else
   StringFormatter::send(wifiStream, F("AT+CWMODE=1\r\n")); // configure as "station" = WiFi client
   checkForOK(1000, OK_SEARCH, true);                       // Not always OK, sometimes "no change"
@@ -181,8 +215,8 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
                  // typical connect time approx 7 seconds
     StringFormatter::send(wifiStream, F("AT+CIFSR\r\n"));
     if (checkForOK(5000, (const char*) F("+CIFSR:STAIP"), true,false))
-	if (!checkForOK(1000, (const char*) F("0.0.0.0"), true,false))
-	    ipOK = true;
+  if (!checkForOK(1000, (const char*) F("0.0.0.0"), true,false))
+      ipOK = true;
   } else { // Should this really be "else" here /haba
 
     if (!ipOK) {
@@ -191,42 +225,43 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
       StringFormatter::send(wifiStream, F("AT+CWJAP?\r\n"));
       if (checkForOK(2000, OK_SEARCH, true)) {
         oldCmd=true;
-	while (wifiStream->available()) StringFormatter::printEscape( wifiStream->read()); /// THIS IS A DIAG IN DISGUISE
+  while (wifiStream->available()) StringFormatter::printEscape( wifiStream->read()); /// THIS IS A DIAG IN DISGUISE
 
-	// AT command early version supports CWJAP/CWSAP
-	if (SSid) {
-	  StringFormatter::send(wifiStream, F("AT+CWJAP=\"%S\",\"%S\"\r\n"), SSid, password);
-	  ipOK = checkForOK(WIFI_CONNECT_TIMEOUT, OK_SEARCH, true);
-	}
-	DIAG(F("\n**\n"));
+  // AT command early version supports CWJAP/CWSAP
+  if (SSid) {
+    StringFormatter::send(wifiStream, F("AT+CWJAP=\"%S\",\"%S\"\r\n"), SSid, password);
+    ipOK = checkForOK(WIFI_CONNECT_TIMEOUT, OK_SEARCH, true);
+  }
+  DIAG(F("\n**\n"));
 
       } else {
       // later version supports CWJAP_CUR
 
         StringFormatter::send(wifiStream, F("AT+CWHOSTNAME=\"%S\"\r\n"), hostname); // Set Host name for Wifi Client
-	checkForOK(2000, OK_SEARCH, true); // dont care if not supported
+  checkForOK(2000, OK_SEARCH, true); // dont care if not supported
       
-	if (SSid) {
-	  StringFormatter::send(wifiStream, F("AT+CWJAP_CUR=\"%S\",\"%S\"\r\n"), SSid, password);
-	  ipOK = checkForOK(WIFI_CONNECT_TIMEOUT, OK_SEARCH, true);
-	}
+  if (SSid) {
+    StringFormatter::send(wifiStream, F("AT+CWJAP_CUR=\"%S\",\"%S\"\r\n"), SSid, password);
+    ipOK = checkForOK(WIFI_CONNECT_TIMEOUT, OK_SEARCH, true);
+  }
       }
 
       if (ipOK) {
-	// But we really only have the ESSID and password correct
+  // But we really only have the ESSID and password correct
         // Let's check for IP
         ipOK = false;
-	StringFormatter::send(wifiStream, F("AT+CIFSR\r\n"));
-	if (checkForOK(5000, (const char*) F("+CIFSR:STAIP"), true,false))
-	  if (!checkForOK(1000, (const char*) F("0.0.0.0"), true,false))
-	    ipOK = true;
+  StringFormatter::send(wifiStream, F("AT+CIFSR\r\n"));
+  if (checkForOK(5000, (const char*) F("+CIFSR:STAIP"), true,false))
+    if (!checkForOK(1000, (const char*) F("0.0.0.0"), true,false))
+      ipOK = true;
       }
     }
   }
 
   if (!ipOK) {
     // If we have not managed to get this going in station mode, go for AP mode
-
+    AccessPoint = true;
+    
     StringFormatter::send(wifiStream, F("AT+CWMODE=2\r\n")); // configure as AccessPoint.
     checkForOK(1000, OK_SEARCH, true); // Not always OK, sometimes "no change"
 
@@ -237,11 +272,17 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
       // Copy 17 byte mac address
       for (int i=0; i<17;i++) {
         while(!wifiStream->available());
-	macAddress[i]=wifiStream->read();
-	StringFormatter::printEscape(macAddress[i]);
+  macAddress[i]=wifiStream->read();
+  StringFormatter::printEscape(macAddress[i]);
       }
     }
-    char macTail[]={macAddress[9],macAddress[10],macAddress[12],macAddress[13],macAddress[15],macAddress[16],'\0'};
+    macTail[0]=macAddress[9];
+    macTail[1]=macAddress[10];
+    macTail[2]=macAddress[12];
+    macTail[3]=macAddress[13];
+    macTail[4]=macAddress[15];
+    macTail[5]=macAddress[16];
+    macTail[6]='\0';
 
     if (oldCmd) {
       while (wifiStream->available()) StringFormatter::printEscape( wifiStream->read()); /// THIS IS A DIAG IN DISGUISE
@@ -249,12 +290,12 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
       int i=0;
       do {
         if (strncmp_P(yourNetwork, (const char*)password, 13) == 0) {
-	  // unconfigured
-	  StringFormatter::send(wifiStream, F("AT+CWSAP=\"DCCEX_%s\",\"PASS_%s\",1,4\r\n"), macTail, macTail);
-	} else {
-	  // password configured by user
+    // unconfigured
+    StringFormatter::send(wifiStream, F("AT+CWSAP=\"DCCEX_%s\",\"PASS_%s\",1,4\r\n"), macTail, macTail);
+  } else {
+    // password configured by user
           StringFormatter::send(wifiStream, F("AT+CWSAP=\"DCCEX_%s\",\"%s\",1,4\r\n"), macTail, password);
-	}
+  }
       } while (i++<2 && !checkForOK(WIFI_CONNECT_TIMEOUT, OK_SEARCH, true)); // do twice if necessary but ignore failure as AP mode may still be ok
     } else {
 
@@ -264,6 +305,8 @@ wifiSerialState WifiInterface::setup2(const __FlashStringHelper* SSid, const __F
       StringFormatter::send(wifiStream, F("AT+CIPRECVMODE=0\r\n"), port); // make sure transfer mode is correct
       checkForOK(2000, OK_SEARCH, true);
     }
+  } else {
+    AccessPoint = false;
   }
 
   StringFormatter::send(wifiStream, F("AT+CIPSERVER=0\r\n")); // turn off tcp server (to clean connections before CIPMUX=1)

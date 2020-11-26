@@ -104,6 +104,24 @@ bool DCC::getThrottleDirection(int cab) {
   return (speedTable[reg].speedCode & 0x80) !=0;
 }
 
+unsigned long DCC::getThrottleFunction(int cab)
+{
+  int reg = lookupSpeedTable(cab);
+  if (reg < 0)
+    return 0;
+  return speedTable[reg].functions;
+}
+
+void DCC::setThrottleFunction(int cab, unsigned long func)
+{
+  if (cab <= 0)
+    return;
+  int reg = lookupSpeedTable(cab);
+  if (reg < 0)
+    return;
+  speedTable[reg].functions = func;
+}
+
 // Set function to value on or off
 void DCC::setFn( int cab, byte functionNumber, bool on) {
   if (cab<=0 || functionNumber>28) return;
@@ -759,4 +777,13 @@ void DCC::callback(int value) {
      }
      StringFormatter::send(stream,F("\nUsed=%d, max=%d\n"),used,MAX_LOCOS);
      
+}
+
+void DCC::displayThrottleCabList(Print *stream) {
+  for (int reg = 0; reg < MAX_LOCOS; reg++) {
+    if (speedTable[reg].loco > 0) {
+      StringFormatter::send(stream, F("<t %d %d %d %d %d>"),
+                            speedTable[reg].loco, ((speedTable[reg].speedCode & 0x7f) == 0) ? 0 : ((speedTable[reg].speedCode & 0x7f) - 1), (speedTable[reg].speedCode & 0x80) ? 1 : 0, (int) (speedTable[reg].functions & 0xFFFF), (int) (speedTable[reg].functions >> 16));
+    }
+  }
 }

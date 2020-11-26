@@ -443,11 +443,13 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
 
     case 's': // <s>
         StringFormatter::send(stream, F("<p%d>"), DCCWaveform::mainTrack.getPowerMode() == POWERMODE::ON);
+        StringFormatter::send(stream,F("<p%d MAIN>"),DCCWaveform::mainTrack.getPowerMode()==POWERMODE::ON );
+        StringFormatter::send(stream,F("<p%d PROG>"),DCCWaveform::progTrack.getPowerMode()==POWERMODE::ON );
         StringFormatter::send(stream, F("<iDCC-EX V-%S / %S / %S G-%S>"), F(VERSION), F(ARDUINO_TYPE), DCC::getMotorShieldName(), F(GITHUB_SHA));
         // TODO Send stats of  speed reminders table
         // TODO send status of turnouts etc etc
         return;
-
+        
     case 'E': // STORE EPROM <E>
         EEStore::store();
         StringFormatter::send(stream, F("<e %d %d %d>"), EEStore::eeStore->data.nTurnouts, EEStore::eeStore->data.nSensors, EEStore::eeStore->data.nOutputs);
@@ -474,9 +476,42 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
     case 'F': // New command to call the new Loco Function API <F cab func 1|0>
         if (Diag::CMD)
             DIAG(F("Setting loco %d F%d %S"), p[0], p[1], p[2] ? F("ON") : F("OFF"));
-        DCC::setFn(p[0], p[1], p[2] == 1);
-        return;
+         if (params == 1) { // LocoFunction <F CAB>
+            //RESET -> Set all Functions to 0
+            if (Diag::CMD) DIAG(F("Setting loco %d all Functions = 0"),p[0]);
+            DCC::setThrottleFunction(p[0], 0);
+            return;
+         } else if (params == 3) { // LocoFunction <F CAB FUNCTION_NUMBER ON|OFF>
+            if (Diag::CMD) DIAG(F("Setting loco %d F%d %S"),p[0],p[1],p[2]?F("ON"):F("OFF"));
+            DCC::setFn(p[0],p[1],p[2]==1);
+            return;
+         } else if (params == 4) { // LocoFunction <F CAB DUMMY FUNCTION_LOW FUNCTION_HIGH>
+            //Dummy for select, set it eg. to 0
+            //Set All Functions for 1 Loco
+            unsigned long func = (p[2] & 0xFFFF) + ((unsigned long)p[3] << 16);
+            if (Diag::CMD) DIAG(F("Setting loco %d all Functions = %l"), p[0], func);
+            DCC::setThrottleFunction(p[0], func);
+            return;
+         }
+         break;
 
+    case 'G':  // GET Loco Data
+               // Without Params: Return Active Locos, eg. at Throttle Start 
+               // With Params: CAB1 ... CABn Get Data from wanted CAB
+               // Last: Info Track Power
+        if (params>0) {
+          for (int i = 0; i < params; i++) {
+            StringFormatter::send(stream,F("<t %d %d %d %d %d>"), 
+                                  p[i], (DCC::getThrottleSpeed(p[i]) == 0) ? 0 : (DCC::getThrottleSpeed(p[i]) - 1), DCC::getThrottleDirection(p[i]), (int) (DCC::getThrottleFunction(p[i]) & 0xFFFF), (int) (DCC::getThrottleFunction(p[i]) >> 16));
+          }
+        } else {
+          DCC::displayThrottleCabList(stream);
+        }
+        //delay(50); //needed, because Throttle cant receive
+        StringFormatter::send(stream,F("<p%d MAIN>"),DCCWaveform::mainTrack.getPowerMode()==POWERMODE::ON );
+        StringFormatter::send(stream,F("<p%d PROG>"),DCCWaveform::progTrack.getPowerMode()==POWERMODE::ON );
+        return;
+        
     case '+': // Complex Wifi interface command (not usual parse)
         if (atCommandCallback) {
           DCCWaveform::mainTrack.setPowerMode(POWERMODE::OFF);

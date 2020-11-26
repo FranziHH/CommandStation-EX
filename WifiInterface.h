@@ -52,5 +52,7 @@ private:
   static int datalength;
   static int connectionId;
   static unsigned long loopTimeoutStart;
+  static char macTail[6];
+  static bool AccessPoint;
 };
 #endif

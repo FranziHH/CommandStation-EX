@@ -43,21 +43,33 @@ void EthernetInterface::setup()
 EthernetInterface::EthernetInterface()
 {
     byte mac[]=MAC_ADDRESS;
-    
+
+    #ifdef OLED_128x64
+      LCD(2,F(" LAN: init ..."));
+    #endif
     DIAG(F("\n+++++ Ethernet Setup "));
         connected=false;
    
-    if (Ethernet.begin(mac) == 0)
+    if (Ethernet.begin(mac, 10000) == 0)
     {
+        #ifdef OLED_128x64
+          LCD(2,F(" LAN: failed"));
+        #endif   
         DIAG(F("begin FAILED\n"));
         return;
     } 
     DIAG(F("begin OK."));
      if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+      #ifdef OLED_128x64
+        LCD(2,F(" LAN: HW not found"));
+      #endif
       DIAG(F("shield not found\n"));
       return;
     }
     if (Ethernet.linkStatus() == LinkOFF) {
+      #ifdef OLED_128x64
+        LCD(2,F(" LAN: not connected"));
+      #endif
       DIAG(F("cable not connected\n"));
       return;
     }
@@ -69,8 +81,21 @@ EthernetInterface::EthernetInterface()
     server = new EthernetServer(LISTEN_PORT); // Ethernet Server listening on default port LISTEN_PORT
     server->begin();
   
-    LCD(4,F("IP: %d.%d.%d.%d"), ip[0], ip[1], ip[2], ip[3]);
-    LCD(5,F("Port:%d"), LISTEN_PORT);
+    #ifndef OLED_128x64
+      LCD(4,F("IP: %d.%d.%d.%d"), ip[0], ip[1], ip[2], ip[3]);
+      LCD(5,F("Port:%d"), LISTEN_PORT);
+    #else
+      if (connected)
+      {
+          LCD(2,F(" LAN: %s"), "TCP");
+          DIAG(F("\nLocal IP address:      [%d.%d.%d.%d]"), ip[0], ip[1], ip[2], ip[3]);
+  //        if (strcmp(IPAddress(IP_ADDRESS), ip) == 0) {
+  //          LCD(3,F(" DHCP failed"));
+  //        } else {
+            LCD(3,F(" %d.%d.%d.%d:%d"), ip[0], ip[1], ip[2], ip[3], LISTEN_PORT);
+  //        }
+      }
+    #endif
 
     outboundRing=new RingStream(OUTBOUND_RING_SIZE);     
 }

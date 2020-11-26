@@ -60,6 +60,9 @@ void StringFormatter::lcd(byte row, const __FlashStringHelper* input...) {
   LCDDisplay::lcdDisplay->setRow(row);    
   va_start(args, input);
   send2(LCDDisplay::lcdDisplay,input,args);
+  #ifdef OLED_128x64
+    LCDDisplay::lcdDisplay->loop2(true);  // force output
+  #endif
 }
 
 void StringFormatter::send(Print * stream, const __FlashStringHelper* input...) {
