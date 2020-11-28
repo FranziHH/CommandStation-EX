@@ -95,7 +95,7 @@ public:
   static void forgetLoco(int cab); // removes any speed reminders for this loco
   static void forgetAllLocos();    // removes all speed reminders
   static void displayCabList(Print *stream);
-  static void displayThrottleCabList(Print * stream);
+  static void displayThrottleCabList(Print * stream, int CallBackNum, int CallBackSub);
   
   static __FlashStringHelper *getMotorShieldName();
 

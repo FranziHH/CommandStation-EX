@@ -499,13 +499,17 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
                // Without Params: Return Active Locos, eg. at Throttle Start 
                // With Params: CAB1 ... CABn Get Data from wanted CAB
                // Last: Info Track Power
-        if (params>0) {
-          for (int i = 0; i < params; i++) {
-            StringFormatter::send(stream,F("<t %d %d %d %d %d>"), 
-                                  p[i], (DCC::getThrottleSpeed(p[i]) == 0) ? 0 : (DCC::getThrottleSpeed(p[i]) - 1), DCC::getThrottleDirection(p[i]), (int) (DCC::getThrottleFunction(p[i]) & 0xFFFF), (int) (DCC::getThrottleFunction(p[i]) >> 16));
+        if (params > 1) {
+          int CallBackNum = p[params - 2];
+          int CallBackSub = p[params - 1];
+          if (params > 2) {
+            for (int i = 0; i < params - 2; i++) {
+              StringFormatter::send(stream,F("<t %d|%d|%d %d %d %d %d>"), 
+                                    CallBackNum, CallBackSub, p[i], (DCC::getThrottleSpeed(p[i]) == 0) ? 0 : (DCC::getThrottleSpeed(p[i]) - 1), DCC::getThrottleDirection(p[i]), (int) (DCC::getThrottleFunction(p[i]) & 0xFFFF), (int) (DCC::getThrottleFunction(p[i]) >> 16));
+            }
+          } else {
+            DCC::displayThrottleCabList(stream, CallBackNum, CallBackSub);
           }
-        } else {
-          DCC::displayThrottleCabList(stream);
         }
         //delay(50); //needed, because Throttle cant receive
         StringFormatter::send(stream,F("<p%d MAIN>"),DCCWaveform::mainTrack.getPowerMode()==POWERMODE::ON );

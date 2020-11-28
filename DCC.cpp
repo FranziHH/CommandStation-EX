@@ -779,11 +779,11 @@ void DCC::callback(int value) {
      
 }
 
-void DCC::displayThrottleCabList(Print *stream) {
+void DCC::displayThrottleCabList(Print *stream, int CallBackNum, int CallBackSub) {
   for (int reg = 0; reg < MAX_LOCOS; reg++) {
     if (speedTable[reg].loco > 0) {
-      StringFormatter::send(stream, F("<t %d %d %d %d %d>"),
-                            speedTable[reg].loco, ((speedTable[reg].speedCode & 0x7f) == 0) ? 0 : ((speedTable[reg].speedCode & 0x7f) - 1), (speedTable[reg].speedCode & 0x80) ? 1 : 0, (int) (speedTable[reg].functions & 0xFFFF), (int) (speedTable[reg].functions >> 16));
+      StringFormatter::send(stream, F("<t %d|%d|%d %d %d %d %d>"),
+                            CallBackNum, CallBackSub, speedTable[reg].loco, ((speedTable[reg].speedCode & 0x7f) == 0) ? 0 : ((speedTable[reg].speedCode & 0x7f) - 1), (speedTable[reg].speedCode & 0x80) ? 1 : 0, (int) (speedTable[reg].functions & 0xFFFF), (int) (speedTable[reg].functions >> 16));
     }
   }
 }
