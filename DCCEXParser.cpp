@@ -36,6 +36,7 @@
 const int HASH_KEYWORD_PROG = -29718;
 const int HASH_KEYWORD_MAIN = 11339;
 const int HASH_KEYWORD_JOIN = -30750;
+const int HASH_KEYWORD_JOINRAW = 22534;
 const int HASH_KEYWORD_CABS = -11981;
 const int HASH_KEYWORD_RAM = 25982;
 const int HASH_KEYWORD_CMD = 9962;
@@ -406,8 +407,8 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
             {
                 DCCWaveform::mainTrack.setPowerMode(mode);
                 DCCWaveform::progTrack.setPowerMode(mode);
-		if (mode == POWERMODE::OFF)
-		  DCC::setProgTrackBoost(false);  // Prog track boost mode will not outlive prog track off
+            		if (mode == POWERMODE::OFF)
+            		  DCC::setProgTrackBoost(false);  // Prog track boost mode will not outlive prog track off
                 StringFormatter::send(stream, F("<p%c>"), opcode);
                 return;
             }
@@ -420,10 +421,11 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
 
             case HASH_KEYWORD_PROG:
                 DCCWaveform::progTrack.setPowerMode(mode);
-		if (mode == POWERMODE::OFF)
-		  DCC::setProgTrackBoost(false);  // Prog track boost mode will not outlive prog track off
+            		if (mode == POWERMODE::OFF)
+            		  DCC::setProgTrackBoost(false);  // Prog track boost mode will not outlive prog track off
                 StringFormatter::send(stream, F("<p%c PROG>"), opcode);
                 return;
+                
             case HASH_KEYWORD_JOIN:
                 DCCWaveform::mainTrack.setPowerMode(mode);
                 DCCWaveform::progTrack.setPowerMode(mode);
@@ -435,6 +437,15 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
                 else
                     StringFormatter::send(stream, F("<p0>"));
                 return;
+
+            case HASH_KEYWORD_JOINRAW:
+                if (DCCWaveform::mainTrack.getPowerMode()==POWERMODE::ON) {
+                  DCCWaveform::progTrack.setPowerMode(mode);
+                  DCC::setProgTrackSyncMain(opcode == '1' ? true : false);
+                  StringFormatter::send(stream, F("<p%c JOIN>"), opcode);
+                }
+                return;
+                
             }
             break;
         }
@@ -522,9 +533,9 @@ void DCCEXParser::parse(Print *stream, byte *com, bool blocking)
             DCC::displayThrottleCabList(stream, CallBackNum, CallBackSub);
           }
         }
-        //delay(50); //needed, because Throttle cant receive
         StringFormatter::send(stream,F("<p%d MAIN>"),DCCWaveform::mainTrack.getPowerMode()==POWERMODE::ON );
         StringFormatter::send(stream,F("<p%d PROG>"),DCCWaveform::progTrack.getPowerMode()==POWERMODE::ON );
+        StringFormatter::send(stream,F("<p%d JOIN>"),DCC::getProgTrackSyncMain() );
         return;
         
     case '+': // Complex Wifi interface command (not usual parse)

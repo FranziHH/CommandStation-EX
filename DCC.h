@@ -79,6 +79,7 @@ public:
   static void setAccessory(int aAdd, byte aNum, bool activate);
   static bool writeTextPacket(byte *b, int nBytes);
   static void setProgTrackSyncMain(bool on); // when true, prog track becomes driveable
+  static bool getProgTrackSyncMain();
   static void setProgTrackBoost(bool on);    // when true, special prog track current limit does not apply
 
   // ACKable progtrack calls  bitresults callback 0,0 or -1, cv returns value or -1

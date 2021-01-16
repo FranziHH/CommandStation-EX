@@ -242,6 +242,9 @@ void DCC::writeCVBitMain(int cab, int cv, byte bNum, bool bValue)  {
 void DCC::setProgTrackSyncMain(bool on) {
   DCCWaveform::progTrackSyncMain=on;
 }
+bool DCC::getProgTrackSyncMain() {
+  return DCCWaveform::progTrackSyncMain;
+}
 void DCC::setProgTrackBoost(bool on) {
   DCCWaveform::progTrackBoosted=on;
 }
