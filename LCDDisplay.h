@@ -19,7 +19,7 @@
 #ifndef LCDDisplay_h
 #define LCDDisplay_h
 #include <Arduino.h>
-#include "Config.h"
+#include "config.h"
 
 // This class is created in LCDisplay_Implementation.h
 
