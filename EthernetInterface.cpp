@@ -49,7 +49,10 @@ EthernetInterface::EthernetInterface()
     #endif
     DIAG(F("\n+++++ Ethernet Setup "));
         connected=false;
-   
+
+    #ifdef IP_ADDRESS
+    Ethernet.begin(mac, IP_ADDRESS);
+    #else
     if (Ethernet.begin(mac, 10000) == 0)
     {
         #ifdef OLED_128x64
@@ -58,6 +61,7 @@ EthernetInterface::EthernetInterface()
         DIAG(F("begin FAILED\n"));
         return;
     } 
+	#endif
     DIAG(F("begin OK."));
      if (Ethernet.hardwareStatus() == EthernetNoHardware) {
       #ifdef OLED_128x64

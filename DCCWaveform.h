@@ -57,6 +57,22 @@ class DCCWaveform {
     POWERMODE getPowerMode();
     void checkPowerOverload();
     int  getLastCurrent();
+    inline int get1024Current() {
+	  if (powerMode == POWERMODE::ON)
+	      return (int)(lastCurrent*(long int)1024/motorDriver->getRawCurrentTripValue());
+	  return 0;
+    }
+    inline int getCurrentmA() {
+      if (powerMode == POWERMODE::ON)
+        return motorDriver->raw2mA(lastCurrent);
+      return 0;
+    }
+    inline int getMaxmA() {
+      if (maxmA == 0) { //only calculate this for first request, it doesn't change
+        maxmA = motorDriver->raw2mA(motorDriver->getRawCurrentTripValue());
+      }
+      return maxmA;        
+    }
     void schedulePacket(const byte buffer[], byte byteCount, byte repeats);
     volatile bool packetPending;
     volatile byte sentResetsSincePacket;
@@ -107,7 +123,7 @@ class DCCWaveform {
     byte pendingLength;
     byte pendingRepeats;
     int lastCurrent;
-
+	int maxmA;
     
     // current sampling
     POWERMODE powerMode;

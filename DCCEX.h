@@ -13,6 +13,9 @@
 #include "EthernetInterface.h"
 #include "LCD_Implementation.h"
 #include "freeMemory.h"
-#include <Arduino.h>
+#if __has_include ( "myAutomation.h")
+  #include "RMFT.h"
+  #define RMFT_ACTIVE
+#endif
 
 #endif

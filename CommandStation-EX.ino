@@ -76,6 +76,10 @@ void setup()
 
   DCC::begin(MOTOR_SHIELD_TYPE); 
 
+  #if defined(RMFT_ACTIVE) 
+      RMFT::begin();
+  #endif
+  
   #ifdef OLED_128x64
     LCD(0, F("DCC++ EX  M:%s P:%s"), "off", "off");
   #else
@@ -128,6 +132,10 @@ void loop()
 #endif
 #if ETHERNET_ON
   EthernetInterface::loop();
+#endif
+
+#if defined(RMFT_ACTIVE) 
+  RMFT::loop();
 #endif
 
 #ifndef OLED_128x64
