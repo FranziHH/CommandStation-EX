@@ -131,6 +131,22 @@ Currently, our products include the following:
 * [EX-FastClock](https://github.com/DCC-EX/EX-FastClock)
 * [DCCEXProtocol](https://github.com/DCC-EX/DCCEXProtocol)
 
+# What is DCC-EX?
+DCC-EX is a team of dedicated enthusiasts producing open source DCC & DC solutions for you to run your complete model railroad layout. Our easy to use, do-it-yourself, and free open source products run on off-the-shelf Arduino technology and are supported by numerous third party hardware and apps like JMRI, Engine Driver, wiThrottle, Rocrail and more. 
+
+Currently, our products include the following:
+
+* [EX-CommandStation](https://github.com/DCC-EX/CommandStation-EX/releases)
+* [EX-WebThrottle](https://github.com/DCC-EX/exWebThrottle)
+* [EX-Installer](https://github.com/DCC-EX/EX-Installer)
+* [EX-MotoShield8874](https://dcc-ex.com/reference/hardware/motorboards/ex-motor-shield-8874.html#gsc.tab=0)
+* [EX-DCCInspector](https://github.com/DCC-EX/DCCInspector-EX)
+* [EX-Toolbox](https://github.com/DCC-EX/EX-Toolbox)
+* [EX-Turntable](https://github.com/DCC-EX/EX-Turntable)
+* [EX-IOExpander](https://github.com/DCC-EX/EX-IOExpander)
+* [EX-FastClock](https://github.com/DCC-EX/EX-FastClock)
+* [DCCEXProtocol](https://github.com/DCC-EX/DCCEXProtocol)
+
 Details of these projects can be found on [our web site](https://dcc-ex.com/).
 
 # What’s in this Repository?
