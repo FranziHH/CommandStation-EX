@@ -1,4 +1,5 @@
 Release/*
+.liesmich.txt
 .ino.cpp
 .pioenvs
 .piolibdeps
