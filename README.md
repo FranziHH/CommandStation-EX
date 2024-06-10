@@ -1,3 +1,11 @@
+# ! Fork From DCC++ EX
+This is Forked From https://github.com/DCC-EX/CommandStation-EX
+
+My Changes Are:
+* Display IP address and port on the same line
+* Show Fastclock in readable form on the display
+
+
 # What is DCC++ EX?
 DCC++ EX is the organization maintaining several codebases that together represent a fully open source DCC system. Currently, this includes the following:
 
