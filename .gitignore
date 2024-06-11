@@ -5,7 +5,7 @@ Release/*
 .piolibdeps
 .clang_complete
 .gcc-flags.json
-.github_sik/
+.git_hub/
 .pio/
 .vscode/
 config.h
