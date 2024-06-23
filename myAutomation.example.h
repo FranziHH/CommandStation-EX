@@ -23,6 +23,20 @@
  *  
  */
 
+// PowerOFF Button
+// Hardware Button, used with EX-RAIL
+// Define the Button Pin
+// #define POWER_BUTTON 26
+#ifdef POWER_BUTTON
+AUTOSTART SEQUENCE(101)
+    IF(POWER_BUTTON)
+        AT(-POWER_BUTTON)
+            POWEROFF
+    ENDIF
+    FOLLOW(101)
+DONE
+#endif
+
 // This is the startup sequence, 
 AUTOSTART
 POWERON        // turn on track power

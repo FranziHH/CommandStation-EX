@@ -126,6 +126,9 @@
   //#define SERIAL5_COMMANDS
   //#define SERIAL6_COMMANDS
 
+  // https://dcc-ex.com/reference/hardware/bluetooth/esp32-bluetooth.html#gsc.tab=0
+  // #define SERIAL_BT_COMMANDS
+  
   // FastClock I2C
   #define FAST_CLOCK_I2C 0x55
 
