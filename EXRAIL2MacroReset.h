@@ -87,6 +87,7 @@
 #undef IFTHROWN
 #undef IFTIMEOUT
 #undef IFTTPOSITION
+#undef IFPOWERON
 #undef IFRE
 #undef INVERT_DIRECTION 
 #undef JMRI_SENSOR

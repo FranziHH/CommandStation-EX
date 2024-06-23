@@ -822,6 +822,10 @@ void RMFT2::loop2() {
     break;
 #endif
 
+  case OPCODE_IFPOWERON:
+    skipIf=(TrackManager::getMainPower()==POWERMODE::OFF);
+    break;
+
   case OPCODE_ENDIF:
     break;
     
