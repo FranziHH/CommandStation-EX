@@ -257,6 +257,7 @@
 #define IFRESERVE(block)
 #define IFTIMEOUT
 #define IFTTPOSITION(turntable_id,position)
+#define IFPOWERON
 #define IFRE(sensor_id,value)
 #define INVERT_DIRECTION 
 #define JMRI_SENSOR(vpin,count...)
