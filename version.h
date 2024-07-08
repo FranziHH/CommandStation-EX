@@ -3,7 +3,8 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.65"
+#define fwVersion " FW"
+#define VERSION "5.2.65" fwVersion
 // 5.2.65 - Speedup Exrail SETFREQ 
 // 5.2.64 - Bugfix: <0 PROG> updated to undo JOIN 
 // 5.2.63 - Implement WIFI_LED for ESP32, ESPduino32 and EX-CSB1, that is turned on when STA mode connects or AP mode is up
