@@ -788,8 +788,16 @@ void RMFT2::loop2() {
     break;
 #endif
 
-  case OPCODE_IFPOWERON:
+  case OPCODE_IF_MAIN_POWERON:
     skipIf=(TrackManager::getMainPower()==POWERMODE::OFF);
+    break;
+
+  case OPCODE_IF_PROG_POWERON:
+    skipIf=(TrackManager::getProgPower()==POWERMODE::OFF);
+    break;
+
+  case OPCODE_IF_JOINED:
+    skipIf=(!TrackManager::isJoined());
     break;
 
   case OPCODE_ENDIF:

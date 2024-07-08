@@ -87,7 +87,9 @@
 #undef IFTHROWN
 #undef IFTIMEOUT
 #undef IFTTPOSITION
-#undef IFPOWERON
+#undef IF_MAIN_POWERON
+#undef IF_PROG_POWERON
+#undef IF_JOINED
 #undef IFRE
 #undef INVERT_DIRECTION 
 #undef JMRI_SENSOR
@@ -257,7 +259,9 @@
 #define IFRESERVE(block)
 #define IFTIMEOUT
 #define IFTTPOSITION(turntable_id,position)
-#define IFPOWERON
+#define IF_MAIN_POWERON
+#define IF_PROG_POWERON
+#define IF_JOINED
 #define IFRE(sensor_id,value)
 #define INVERT_DIRECTION 
 #define JMRI_SENSOR(vpin,count...)

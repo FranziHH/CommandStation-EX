@@ -89,7 +89,9 @@ enum OPCODE : byte {OPCODE_THROW,OPCODE_CLOSE,OPCODE_TOGGLE_TURNOUT,
              OPCODE_IFRE,
              OPCODE_IFLOCO,
              OPCODE_IFTTPOSITION,
-             OPCODE_IFPOWERON
+             OPCODE_IF_MAIN_POWERON,
+             OPCODE_IF_PROG_POWERON,
+             OPCODE_IF_JOINED
              };
 
 // Ensure thrunge_lcd is put last as there may be more than one display, 

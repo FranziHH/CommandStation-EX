@@ -42,7 +42,7 @@ DONE
 AUTOSTART SEQUENCE(101)
     IF(POWER_BUTTON)
         AT(-POWER_BUTTON)
-            IFPOWERON
+            IF_MAIN_POWERON
                 POWEROFF
             ELSE
                 POWERON
