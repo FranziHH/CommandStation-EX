@@ -3,7 +3,10 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.66"
+// #define VERSION "5.2.66"
+// to recognize own changes
+#define VERSION "5.2.66 FW"
+
 // 5.2.66 - <F cab DCFREQ 0..3>
 //        - EXRAIL SETFREQ drop loco param (breaking since 5.2.28)
 // 5.2.65 - Speedup Exrail SETFREQ 
