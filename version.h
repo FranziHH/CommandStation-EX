@@ -3,10 +3,12 @@
 
 #include "StringFormatter.h"
 
-// #define VERSION "5.2.66"
-// to recognize own changes
-#define VERSION "5.2.66 FW"
-
+#define VERSION "5.2.68 FW"
+// 5.2.68 -  Revert function map to signed (from 5.2.66) to avoid
+//           incompatibilities with ED etc for F31 frequency flag.
+// 5.2.67 -  EXRAIL AFTER optional debounce time variable (default 500mS)
+//        -  AFTER(42) == AFTER(42,500) sets time sensor must 
+//        -  be continuously off.
 // 5.2.66 - <F cab DCFREQ 0..3>
 //        - EXRAIL SETFREQ drop loco param (breaking since 5.2.28)
 // 5.2.65 - Speedup Exrail SETFREQ 
