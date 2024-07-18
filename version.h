@@ -3,7 +3,7 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.68 FW"
+#define VERSION "5.2.70 FW"
 // 5.2.68 -  Revert function map to signed (from 5.2.66) to avoid
 //           incompatibilities with ED etc for F31 frequency flag.
 // 5.2.67 -  EXRAIL AFTER optional debounce time variable (default 500mS)
