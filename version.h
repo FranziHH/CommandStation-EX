@@ -3,7 +3,7 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.71 FW"
+#define VERSION "5.2.71a FW"
 // 5.2.71 -  Broadcasts of loco forgets. 
 // 5.2.70 -  IO_RocoDriver renamed to IO_EncoderThrottle.
 //        -  and included in IODEvice.h (circular dependency removed) 
