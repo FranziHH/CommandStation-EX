@@ -2,7 +2,8 @@
 #define version_h
 
 #include "StringFormatter.h"
-#define VERSION "5.2.76 FW"
+#define VERSION "5.2.77 FW"
+// 5.2.77 - Withrottle: Implement "force function" subcommand "f"
 // 5.2.76 - Bugfix: EXRAIL: Catch CV read errors in the callback
 // 5.2.75 - Bugfix: Serial lines 4 to 6 OK
 // 5.2.74 - Bugfix: ESP32 turn on the joined prog (as main) again after a prog operation
