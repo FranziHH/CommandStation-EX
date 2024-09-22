@@ -53,15 +53,11 @@ static const FSH * guessI2CDeviceType(uint8_t address) {
     return F("QMC6310 Magnetometer");
   if (address >= 0x20 && address <= 0x26)
     return F("GPIO Expander");
-<<<<<<< HEAD
 #ifdef FAST_CLOCK_I2C
-  else if (address == FAST_CLOCK_I2C)
+  if (address == FAST_CLOCK_I2C)
     return F("Fast Clock");
 #endif
-  else if (address == 0x27)
-=======
   if (address == 0x27)
->>>>>>> devel
     return F("GPIO Expander or LCD Display");
   if (address == 0x29)
     return F("Time-of-flight sensor");
