@@ -141,6 +141,23 @@ void setup()
   CommandDistributor::broadcastPower();
 }
 
+/**************** for future reference
+void looptimer(unsigned long timeout, const FSH* message)
+{
+  static unsigned long lasttimestamp = 0;
+  unsigned long now = micros();
+  if (timeout != 0) {
+    unsigned long diff = now - lasttimestamp;
+    if (diff > timeout) {
+      DIAG(message);
+      DIAG(F("DeltaT=%L"), diff);
+      lasttimestamp = micros();
+      return;
+    }
+  }
+  lasttimestamp = now;
+}
+*********************************************/
 void loop()
 {
   // The main sketch has responsibilities during loop()
@@ -148,14 +165,15 @@ void loop()
   // Responsibility 1: Handle DCC background processes
   //                   (loco reminders and power checks)
   DCC::loop();
-
+ 
   // Responsibility 2: handle any incoming commands on USB connection
   SerialManager::loop();
-
+ 
   // Responsibility 3: Optionally handle any incoming WiFi traffic
 #ifndef ARDUINO_ARCH_ESP32
 #if WIFI_ON
   WifiInterface::loop();
+ 
 #endif //WIFI_ON
 #else  //ARDUINO_ARCH_ESP32
 #ifndef WIFI_TASK_ON_CORE0
