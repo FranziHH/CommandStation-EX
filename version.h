@@ -2,7 +2,8 @@
 #define version_h
 
 #include "StringFormatter.h"
-#define VERSION "5.2.85aFW"
+#define VERSION "5.2.86 FW"
+// 5.2.86 - IO_TCA8418 driver for keypad matrix input now fully functioning, including being able to use an interrupt pin
 // 5.2.85 - IO_TM1638 driver, SEG7 Exrail macro and _s7 segment pattern generator.
 // 5.2.84 - Fix TrackManager setDCCSignal and setPROGSignal for STM32 shadowing of PORTG/PORTH - this time it really is correct!
 // 5.2.83 - Various STM32 related fixes for serial ports, I2C pullups now turned off, and shadowing of PORTG/PORTH for TrackManager now correct
