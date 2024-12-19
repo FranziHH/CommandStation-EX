@@ -3,7 +3,8 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.91 FW"
+#define VERSION "5.2.92 FW"
+// 5.2.92 - Bugfix: FADE power off fix, EXRAIL power diagnostic fix.
 // 5.2.91 - Bugfix: Neopixel I2C overlap check
 // 5.2.90 - Bugfix: EXRAIL EXTT_TURNTABLE() now has description as optional in line with ocumentation (also fixed DCC_TURNTABLE) 
 // 5.2.89 - EXRAIL SET(vpin[,npins]) RESET(vpin,[,npins]) pin range manipulation 
