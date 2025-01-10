@@ -3,7 +3,10 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.2.95 FW"
+#define VERSION "5.5.0 FW"
+// 5.5.0  - New version on devel
+// 5.4.0  - New version on master
+// 5.2.96 - EXRAIL additions XFWD() and XREV()
 // 5.2.95 - Release candidate for 5.4
 // 5.2.94 - Bugfix: Less confusion and simpler code around the RCN213 defines
 // 5.2.93 - Bugfix ESP32: clear progTrackSyncMain (join flag) when prog track is removed

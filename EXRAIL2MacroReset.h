@@ -2,6 +2,7 @@
  *  © 2020-2022 Chris Harlow. All rights reserved.
  *  © 2022-2023 Colin Murdoch
  *  © 2023 Harald Barth
+ *  © 2025 Morten Nielsen
  *  
  *  This file is part of CommandStation-EX
  *
@@ -197,6 +198,8 @@
 #undef XFOFF
 #undef XFON
 #undef XFTOGGLE
+#undef XREV
+#undef XFWD
 
 #ifndef RMFT2_UNDEF_ONLY
 #define ACTIVATE(addr,subaddr)
@@ -371,5 +374,7 @@
 #define XFOFF(cab,func)
 #define XFON(cab,func)
 #define XFTOGGLE(cab,func)
+#define XFWD(cab,speed)
+#define XREV(cab,speed)
 
 #endif
