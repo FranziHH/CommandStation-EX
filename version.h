@@ -3,7 +3,14 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.1 FW"
+#define VERSION "5.5.4 FW"
+// 5.5.4  - Split ESP32 from DCCWaveform to DCCWaveformRMT
+//        - Railcom Cutout control (DCCTimerAVR Mega only so far) 
+// 5.5.3  - EXRAIL ESTOPALL,XPOM, 
+//        - Bugfix RESERVE to cause ESTOP.(was STOP)
+//        - Correct direction sync after manual throttle change. 
+//        - plus ONBLOCKENTER/EXIT in preparation for Railcom
+// 5.5.2  - DS1307 Real Time clock 
 // 5.5.1  - Momentum 
 // 5.5.0  - New version on devel
 // 5.4.0  - New version on master

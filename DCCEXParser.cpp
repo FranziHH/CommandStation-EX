@@ -64,8 +64,8 @@ Once a new OPCODE is decided upon, update this list.
   I, Turntable object command, control, and broadcast
   j, Throttle responses
   J, Throttle queries
-  k, Reserved for future use - Potentially Railcom
-  K, Reserved for future use - Potentially Railcom
+  k, Block exit  (Railcom)
+  K, Block enter (Railcom)
   l, Loco speedbyte/function map broadcast
   L, Reserved for LCC interface (implemented in EXRAIL)
   m, message to throttles (broadcast output) 
@@ -1223,6 +1223,10 @@ bool DCCEXParser::parseD(Print *stream, int16_t params, int16_t p[])
         return true;
 
 #ifdef HAS_ENOUGH_MEMORY
+    case "RAILCOM"_hk: // <D RAILCOM ON/OFF>
+        Diag::RAILCOM = onOff;
+        return true;
+
     case "WIFI"_hk: // <D WIFI ON/OFF>
         Diag::WIFI = onOff;
         return true;

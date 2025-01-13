@@ -61,6 +61,7 @@
 #undef ENDIF  
 #undef ENDTASK
 #undef ESTOP
+#undef ESTOPALL
 #undef EXRAIL
 #undef EXTT_TURNTABLE
 #undef FADE
@@ -115,6 +116,8 @@
 #undef ONACTIVATE
 #undef ONACTIVATEL
 #undef ONAMBER
+#undef ONBLOCKENTER
+#undef ONBLOCKEXIT
 #undef ONDEACTIVATE
 #undef ONDEACTIVATEL 
 #undef ONCLOSE
@@ -199,6 +202,7 @@
 #undef XFOFF
 #undef XFON
 #undef XFTOGGLE
+#undef XPOM
 #undef XREV
 #undef XFWD
 
@@ -239,6 +243,7 @@
 #define ENDIF  
 #define ENDTASK
 #define ESTOP 
+#define ESTOPALL
 #define EXRAIL
 #define EXTT_TURNTABLE(id,vpin,home,description...)
 #define FADE(pin,value,ms)
@@ -292,6 +297,8 @@
 #define ONACTIVATE(addr,subaddr)
 #define ONACTIVATEL(linear)
 #define ONAMBER(signal_id) 
+#define ONBLOCKENTER(blockid)
+#define ONBLOCKEXIT(blockid)
 #define ONTIME(value)
 #define ONCLOCKTIME(hours,mins)
 #define ONCLOCKMINS(mins)
@@ -378,5 +385,5 @@
 #define XFTOGGLE(cab,func)
 #define XFWD(cab,speed)
 #define XREV(cab,speed)
-
+#define XPOM(cab,cv,value)
 #endif
