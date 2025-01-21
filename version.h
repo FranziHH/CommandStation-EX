@@ -3,7 +3,10 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.8 FW"
+#define VERSION "5.5.11 FW"
+// 5.5.11 - (5.4.2) accessory command reverse
+// 5.5.10 - CamParser fix
+// 5.5.9  - (5.4.3) fix changeFn for functions 29..31
 // 5.5.8  - EXSensorCam clean up to match other filters and
 //        - avoid need for config.h settings
 //        - Test: IO_I2CDFPlayer.h inserted 10mS deleay in Init_SC16IS752() just after soft-reset for board with 1.8432 Mhz xtal
@@ -23,6 +26,9 @@
 // 5.5.2  - DS1307 Real Time clock 
 // 5.5.1  - Momentum 
 // 5.5.0  - New version on devel
+// 5.4.3  - bugfix changeFn for functions 29..31
+// 5.4.2  - Reversed turnout bugfix
+// 5.4.1  - ESP32 bugfix packet buffer race
 // 5.4.0  - New version on master
 // 5.2.96 - EXRAIL additions XFWD() and XREV()
 // 5.2.95 - Release candidate for 5.4

@@ -17,4 +17,3 @@ my*.h
 compile_commands.json
 newcode.txt.old
 UserAddin.txt
-platformio.ini
