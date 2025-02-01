@@ -317,10 +317,10 @@ void  CommandDistributor::broadcastPower() {
       // do not call getPower(t) unless isActive(t)!
       if (TrackManager::getPower(t) == POWERMODE::ON) {
         trackX[t] = 1;
-	      oncount++;
+        oncount++;
       } else{
         trackX[t] = 0;
-	      offcount++;
+        offcount++;
       }
     } else {
       trackX[t] = -1;
