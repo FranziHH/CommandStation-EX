@@ -73,6 +73,8 @@
 #undef FREE 
 #undef FWD 
 #undef GREEN
+#undef GET_POWER
+#undef GET_TRACK
 #undef HAL
 #undef HAL_IGNORE_DEFAULTS
 #undef IF 
@@ -255,6 +257,8 @@
 #define FTOGGLE(func)
 #define FWD(speed) 
 #define GREEN(signal_id)
+#define GET_POWER(track)
+#define GET_TRACK(track)
 #define HAL(haltype,params...)
 #define HAL_IGNORE_DEFAULTS
 #define IF(sensor_id) 

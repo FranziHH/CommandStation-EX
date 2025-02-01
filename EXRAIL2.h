@@ -85,6 +85,7 @@ enum OPCODE : byte {OPCODE_THROW,OPCODE_CLOSE,OPCODE_TOGGLE_TURNOUT,
              // placed here so that they may be skipped as a group
              // see skipIfBlock()
             IF_TYPE_OPCODES, // do not move this... 
+             OPCODE_GET_POWER,OPCODE_GET_TRACK,
              OPCODE_IFRED,OPCODE_IFAMBER,OPCODE_IFGREEN,
              OPCODE_IFGTE,OPCODE_IFLT,
              OPCODE_IFTIMEOUT,

@@ -723,7 +723,25 @@ void RMFT2::loop2() {
     TrackManager::setPower(POWERMODE::OFF);
     TrackManager::setJoin(false);
     break;
-  
+
+  case OPCODE_GET_POWER:
+    // 'ALL' cannot be used here
+    if (operand == TRACK_NUMBER_ALL) {
+      skipIf=true;
+    } else {
+      skipIf=(TrackManager::getPower(operand)==POWERMODE::OFF);
+    }
+    break;
+    
+  case OPCODE_GET_TRACK:
+    // 'ALL' cannot be used here
+    if (operand == TRACK_NUMBER_ALL) {
+      skipIf=true;
+    } else {
+      skipIf=(!TrackManager::isActive(operand));
+    }
+    break;
+
   case OPCODE_SET_POWER:
       // operand is TRACK_POWER , trackid
         //byte thistrack=getOperand(1);
