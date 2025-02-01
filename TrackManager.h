@@ -38,6 +38,7 @@ const byte TRACK_NUMBER_4=4, TRACK_NUMBER_E=4;
 const byte TRACK_NUMBER_5=5, TRACK_NUMBER_F=5;    
 const byte TRACK_NUMBER_6=6, TRACK_NUMBER_G=6;    
 const byte TRACK_NUMBER_7=7, TRACK_NUMBER_H=7;    
+const byte TRACK_NUMBER_8=8, TRACK_NUMBER_ALL=8;
 
 // These constants help EXRAIL macros convert Track Power e.g. SET_POWER(A ON|OFF).
 const byte TRACK_POWER_0=0, TRACK_POWER_OFF=0;    

@@ -310,14 +310,20 @@ void  CommandDistributor::broadcastPower() {
   byte trackcount=0;
   byte oncount=0;
   byte offcount=0;
+  byte trackX[TrackManager::MAX_TRACKS];
   for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
     if (TrackManager::isActive(t)) {
       trackcount++;
       // do not call getPower(t) unless isActive(t)!
-      if (TrackManager::getPower(t) == POWERMODE::ON)
-	oncount++;
-      else
-	offcount++;
+      if (TrackManager::getPower(t) == POWERMODE::ON) {
+        trackX[t] = 1;
+	      oncount++;
+      } else{
+        trackX[t] = 0;
+	      offcount++;
+      }
+    } else {
+      trackX[t] = -1;
     }
   }
   //DIAG(F("t=%d on=%d off=%d"), trackcount, oncount, offcount);
@@ -355,8 +361,11 @@ void  CommandDistributor::broadcastPower() {
   // send '1' if all main are on, otherwise global state (which in that case is '0' or '2')
   broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
 #endif
-
+#ifdef LCD_ADVANCED_POWER
+  LCD(2,F("Power %S %S %S"),trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")),trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")),join?F("J:1"):F("J:0"));
+#else
   LCD(2,F("Power %S%S"),state=='1'?F("On"): ( state=='0'? F("Off") : F("SC") ),reason);
+#endif
 }
 
 void CommandDistributor::broadcastRaw(clientType type, char * msg) {

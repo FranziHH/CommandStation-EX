@@ -727,13 +727,14 @@ void RMFT2::loop2() {
   case OPCODE_SET_POWER:
       // operand is TRACK_POWER , trackid
         //byte thistrack=getOperand(1);
-        switch (operand) {
-          case TRACK_POWER_0:
-            TrackManager::setTrackPower(POWERMODE::OFF, getOperand(1));
-          break;
-          case TRACK_POWER_1:
-            TrackManager::setTrackPower(POWERMODE::ON, getOperand(1));
-          break;
+        if (getOperand(1) == TRACK_NUMBER_ALL) {
+          for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
+            if (TrackManager::isActive(t)) {
+              TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, t);
+            }
+          }
+        } else {
+          TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, getOperand(1));
         }
 
     break;
