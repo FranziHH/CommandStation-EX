@@ -84,7 +84,7 @@
 #include "EXRAIL2MacroReset.h"
 #undef ALIAS
 #define ALIAS(name,value...) const int name= #value[0] ? value+0: -__COUNTER__ ; 
-#include "myAutomation.h"
+#include "Settings/myAutomation.h"
 
 // Pass 1d Detect sequence duplicates.
 // This pass generates no runtime data or code 
@@ -96,7 +96,7 @@
 #undef SEQUENCE
 #define SEQUENCE(id) id,
 constexpr int16_t compileTimeSequenceList[]={
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
    0
    };
 constexpr int16_t stuffSize=sizeof(compileTimeSequenceList)/sizeof(int16_t) - 1;
@@ -151,13 +151,13 @@ static_assert(!hasdup(compileTimeSequenceList[0],1),"Duplicate SEQUENCE/ROUTE/AU
 #undef REV
 #define REV(speed) static_assert(speed>=0 && speed<128,"Speed out of valid range 0-127");
 
-#include "myAutomation.h"
+#include "Settings/myAutomation.h"
 
 // Pass 1g Implants STEALTH_GLOBAL in correct place 
 #include "EXRAIL2MacroReset.h"
 #undef STEALTH_GLOBAL
 #define STEALTH_GLOBAL(code...) code
-#include "myAutomation.h"
+#include "Settings/myAutomation.h"
 
 // Pass 1h Implements HAL macro by creating exrailHalSetup function
 // Also allows creating EXTurntable object
@@ -172,7 +172,7 @@ static_assert(!hasdup(compileTimeSequenceList[0],1),"Duplicate SEQUENCE/ROUTE/AU
 #define CONFIGURE_SERVO(vpin,pos1,pos2,profile) IODevice::configureServo(vpin,pos1,pos2,PCA9685::profile);
 bool exrailHalSetup() {
    bool ignore_defaults=false;
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
    return ignore_defaults;
 }
 
@@ -238,7 +238,7 @@ bool exrailHalSetup() {
 #define ONBLOCKEXIT(blockid) | FEATURE_BLOCK
 
 const byte RMFT2::compileFeatures = 0
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
 ;
 
 // Pass 2 create throttle route list 
@@ -246,14 +246,14 @@ const byte RMFT2::compileFeatures = 0
 #undef ROUTE
 #define ROUTE(id, description) id,
 const int16_t HIGHFLASH  RMFT2::routeIdList[]= {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
     INT16_MAX};
 // Pass 2a create throttle automation list 
 #include "EXRAIL2MacroReset.h"
 #undef AUTOMATION
 #define AUTOMATION(id, description) id,
 const int16_t HIGHFLASH RMFT2::automationIdList[]= {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
     INT16_MAX};
 
 // Pass 3 Create route descriptions:
@@ -263,7 +263,7 @@ const int16_t HIGHFLASH RMFT2::automationIdList[]= {
 #define AUTOMATION(id, description) case id: return F(description);
 const FSH * RMFT2::getRouteDescription(int16_t id) {
    switch(id) {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
     default: break;
    }
    return F("");
@@ -338,7 +338,7 @@ void  RMFT2::printMessage(uint16_t id) {
   uint32_t strfar=0;
   byte lcdid=0; 
   switch(id) {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
     default: break ; 
   }
   if (strfar) thrungeString(strfar,tmode,lcdid);
@@ -360,7 +360,7 @@ void  RMFT2::printMessage(uint16_t id) {
 
 const FSH * RMFT2::getTurnoutDescription(int16_t turnoutid) {
      switch (turnoutid) {
-        #include "myAutomation.h"
+        #include "Settings/myAutomation.h"
      default:break;
      }
      return NULL;
@@ -375,7 +375,7 @@ const FSH * RMFT2::getTurnoutDescription(int16_t turnoutid) {
 
 const FSH * RMFT2::getTurntableDescription(int16_t turntableId) {
    switch (turntableId) {
-      #include "myAutomation.h"
+      #include "Settings/myAutomation.h"
    default:break;
    }
    return NULL;
@@ -389,7 +389,7 @@ const FSH * RMFT2::getTurntableDescription(int16_t turntableId) {
 const FSH * RMFT2::getTurntablePositionDescription(int16_t turntableId, uint8_t positionId) {
   (void)turntableId;
   (void)positionId;
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
    return NULL;
 }
 
@@ -398,7 +398,7 @@ const FSH * RMFT2::getTurntablePositionDescription(int16_t turntableId, uint8_t 
 #undef ROSTER
 #define ROSTER(cabid,name,funcmap...) +(cabid <= 0 ? 0 : 1)
 const byte RMFT2::rosterNameCount=0
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
    ;
    
 // Pass 6: Roster IDs 
@@ -406,7 +406,7 @@ const byte RMFT2::rosterNameCount=0
 #undef ROSTER
 #define ROSTER(cabid,name,funcmap...) cabid,
 const int16_t HIGHFLASH  RMFT2::rosterIdList[]={
-   #include "myAutomation.h"
+   #include "Settings/myAutomation.h"
    INT16_MAX};
 
 // Pass 7: Roster names getter
@@ -415,7 +415,7 @@ const int16_t HIGHFLASH  RMFT2::rosterIdList[]={
 #define ROSTER(cabid,name,funcmap...) case cabid: return F(name);
 const FSH * RMFT2::getRosterName(int16_t id) {
    switch(id) {
-      #include "myAutomation.h"
+      #include "Settings/myAutomation.h"
    default: break;
    }
    return F("");   
@@ -426,7 +426,7 @@ const FSH * RMFT2::getRosterName(int16_t id) {
 #define ROSTER(cabid,name,funcmap...) case cabid: return F("" funcmap);
 const FSH * RMFT2::getRosterFunctions(int16_t id) {
    switch(id) {
-      #include "myAutomation.h"
+      #include "Settings/myAutomation.h"
    default: break; 
    }   
    return NULL;
@@ -452,7 +452,7 @@ const FSH * RMFT2::getRosterFunctions(int16_t id) {
 #define VIRTUAL_SIGNAL(id) {sigtypeVIRTUAL,id,0,0,0},
 
 const  HIGHFLASH  SIGNAL_DEFINITION RMFT2::SignalDefinitions[] = {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
      {sigtypeNoMoreSignals,0,0,0,0}
     };
 
@@ -466,7 +466,7 @@ const  HIGHFLASH  SIGNAL_DEFINITION RMFT2::SignalDefinitions[] = {
 #define ONACOF(event) +1 
 
 const int RMFT2::countLCCLookup=0
-#include "myAutomation.h"
+#include "Settings/myAutomation.h"
 ;
 int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 
@@ -687,7 +687,7 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 // Build RouteCode
 const int StringMacroTracker2=__COUNTER__;
 const  HIGHFLASH3  byte RMFT2::RouteCode[] = {
-    #include "myAutomation.h"
+    #include "Settings/myAutomation.h"
     OPCODE_ENDTASK,0,0,OPCODE_ENDEXRAIL,0,0 };
 
 // Restore normal code LCD & SERIAL  macro

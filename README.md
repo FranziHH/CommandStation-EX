@@ -1,9 +1,110 @@
 # ! Fork From DCC++ EX
 This is Forked From https://github.com/DCC-EX/CommandStation-EX
 
-My Changes Are:
+### 2.4'' I2C OLED Display (128 x 64 LCD-Display SSD1309)
+eg: https://de.aliexpress.com/item/1005006357395269.html  
+
+The 2.4'' display works without changes with the SSD1306 settings
+```
+ // SSD1306: 0.96'' OLED: 128,64 OR SSD1309: 2.4'' 128,64
+  #define OLED_DRIVER 128,64
+  // max 8 Lines - default are 7
+  #define MAX_CHARACTER_ROWS 9 
+```
+
+### All I2C OLED 128 x 64 Displays
+The default setting for the number of lines is max:7
+This display can show 8 lines.
+This setting must be set for this:
+```
+  // max 8 Lines - default are 7
+  #define MAX_CHARACTER_ROWS 9 
+```
+
+### My Changes Are:
 * Display IP address and port on the same line
 * Show Fastclock in readable form on the display
+* new ExRail Commands
+* new Power Presentation on Display
+    for the new options (DC) in the track manager the display no longer works
+
+<img src="/Images/IMG_20250202_113133.jpg" height="400px" title="2.4'' Display">
+
+##### Configuration files moved to the “Settings” subfolder
+To make the settings easier to find, the files config.h and myAutomation.h have been moved to the 'Settings' folder.
+
+##### New ExRail Commands:
+* GET_POWER(TRACK) - is Track powerd on/off 
+* GET_TRACK(TRACK) - is Track available
+
+##### Example of an emergency stop
+define your button in config.h:
+```
+  // Hardware Button, used with EX-RAIL
+  #define EMERGENCY_BUTTON 26 // Arduino Pin #2
+```
+put in myAutomation.h
+```
+/* Emergency Stop */
+#ifdef EMERGENCY_BUTTON
+AUTOSTART SEQUENCE(102)
+    IF(EMERGENCY_BUTTON)
+        AT(-EMERGENCY_BUTTON)
+            SET_POWER(ALL,OFF)
+    ENDIF
+    FOLLOW(102)
+DONE
+#endif
+```
+
+##### Example of an toggle PowerButton eg Track A
+define your button in config.h:
+```
+  // Hardware Button, used with EX-RAIL
+  #define POWER_BUTTON_A 26 // Arduino Pin #2
+```
+put in myAutomation.h
+```
+/* Toggle Power Button A */
+#ifdef POWER_BUTTON_A
+AUTOSTART SEQUENCE(101)
+    IF(POWER_BUTTON_A)
+        AT(-POWER_BUTTON_A)
+            // 'ALL' cannot be used here
+            GET_POWER(A)
+                SET_POWER(A,OFF)
+            ELSE
+                SET_POWER(A,ON)
+            ENDIF
+    ENDIF
+    FOLLOW(101)
+DONE
+#endif
+```
+
+#### Display
+New display format for the power display:
+Due to the new functions in the Track Manager, the conventional power display no longer works.
+If DC is selected, the display is no longer correct. 
+
+##### Activate the new display: define in config.h
+```
+  // Alternative View Power
+  #define LCD_ADVANCED_POWER
+```
+
+##### Display IP address and port on the same line: define in config.h
+```
+  // Shows IP and Port on Display in a single line
+  #define PRINT_IP_PORT_SINGLE_LINE
+```
+
+##### Show Fastclock in readable form on the display: define in config.h
+```
+  // FastClock in HH:MM on Display
+  #define FASTCLOCK_READABLE
+```
+
 
 # What is DCC-EX?
 DCC-EX is a team of dedicated enthusiasts producing open source DCC & DC solutions for you to run your complete model railroad layout. Our easy to use, do-it-yourself, and free open source products run on off-the-shelf Arduino technology and are supported by numerous third party hardware and apps like JMRI, Engine Driver, wiThrottle, Rocrail and more. 

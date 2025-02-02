@@ -28,8 +28,8 @@
 // defines.h relies on macros defined in config.h
 // but it may have already been included (for cosmetic convenence) by the .ino
 #ifndef MOTOR_SHIELD_TYPE
-  #if __has_include ( "config.h")
-    #include "config.h"
+  #if __has_include ("Settings/config.h")
+    #include "Settings/config.h"
   #else
     #include "config.example.h"
   #endif
@@ -231,7 +231,7 @@
 
 #endif
 
-#if __has_include ( "myAutomation.h")
+#if __has_include ("Settings/myAutomation.h")
   #if defined(HAS_ENOUGH_MEMORY) || defined(DISABLE_EEPROM) || defined(DISABLE_PROG)
     #define EXRAIL_ACTIVE
   #else

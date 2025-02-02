@@ -9,6 +9,7 @@ Release/*
 .pio/
 .vscode/
 config.h
+config.wifi.h
 mySetup.cpp
 myHal.cpp
 myFilter.cpp

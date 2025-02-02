@@ -725,9 +725,16 @@ void RMFT2::loop2() {
     break;
 
   case OPCODE_GET_POWER:
-    // 'ALL' cannot be used here
     if (operand == TRACK_NUMBER_ALL) {
-      skipIf=true;
+      bool onFlg = false;
+      for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
+        if (TrackManager::isActive(t)) {
+          if (TrackManager::getPower(t) == POWERMODE::ON) {
+            onFlg = true;
+          }
+        }
+      }
+      skipIf=!onFlg;
     } else {
       skipIf=(TrackManager::getPower(operand)==POWERMODE::OFF);
     }

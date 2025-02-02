@@ -1,0 +1,3 @@
+// WiFi Config
+#define WIFI_SSID "Your SSID"
+#define WIFI_PASSWORD "Your Password"

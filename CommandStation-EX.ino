@@ -16,8 +16,8 @@
 // If config.h is not found, config.example.h will be used with all defaults.
 ////////////////////////////////////////////////////////////////////////////////////
 
-#if __has_include ( "config.h")
-  #include "config.h"
+#if __has_include ("Settings/config.h")
+  #include "Settings/config.h"
   #ifndef MOTOR_SHIELD_TYPE
   #error Your config.h must include a MOTOR_SHIELD_TYPE definition. If you see this warning in spite not having a config.h, you have a buggy preprocessor and must copy config.example.h to config.h
   #endif
