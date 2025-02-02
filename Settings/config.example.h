@@ -7,7 +7,7 @@
 // 5 - ESP32 #2
 // 6 - ESP32 #2 with 2,4'' Display SSD1309
 // --------------------
-#define USE_CONFIG 5
+#define USE_CONFIG 3
 // --------------------
 
 // include wifi config
@@ -226,8 +226,8 @@
   #define FASTCLOCK_READABLE
 
   // Hardware Button, used with EX-RAIL
-  // #define EMERGENCY_BUTTON 26 // Arduino Pin #2
-  #define POWER_BUTTON_A 26
+  #define EMERGENCY_BUTTON 26 // Arduino Pin #2
+  // #define POWER_BUTTON_A 26
 #endif
 
 // otherwise does fastclock nothing

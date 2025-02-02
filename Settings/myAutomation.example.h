@@ -56,7 +56,7 @@ AUTOMATION(503, "4: B DC (99)")
 DONE 
 
 /* Set Default at Start A:DCC Main, B:PROG */
-AUTOSTART SEQUENCE(102)
+AUTOSTART SEQUENCE(103)
     SET_TRACK(A, MAIN)
     SET_TRACK(B, PROG)
     LCD (7,"A Main, B Prog")
