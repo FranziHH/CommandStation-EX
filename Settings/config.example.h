@@ -5,9 +5,9 @@
 // 3 - Arduino Mega #3
 // 4 - ESP32 #1
 // 5 - ESP32 #2
-// 6 - ESP32 #2 with 2,4'' Display SSD1309
+// 6 - ESP32 #1 with 2,4'' Display SSD1309
 // --------------------
-#define USE_CONFIG 3
+#define USE_CONFIG 6
 // --------------------
 
 // include wifi config
@@ -18,6 +18,8 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  #define MOTOR_SHIELD_DC
+
   // SSD1306: 0.96'' OLED: 128,64
   // SSH1106: 1.13'' OLED: 132,64 
   #define OLED_DRIVER 132,64
@@ -59,6 +61,8 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  #define MOTOR_SHIELD_DC
+
   // SSD1306: 0.96'' OLED: 128,64
   // SSH1106: 1.13'' OLED: 132,64 
   #define OLED_DRIVER 132,64
@@ -100,6 +104,8 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  #define MOTOR_SHIELD_DC
+
   // SSD1306: 0.96'' OLED: 128,64
   // SSH1106: 1.13'' OLED: 132,64 
   #define OLED_DRIVER 132,64
@@ -141,6 +147,7 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  #define MOTOR_SHIELD_DC
 
   // SSD1306: 0.96'' OLED: 128,64
   // #define OLED_DRIVER 128,64
@@ -188,6 +195,7 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  #define MOTOR_SHIELD_DC
 
   // SSD1306: 0.96'' OLED: 128,64
   // #define OLED_DRIVER 128,64
@@ -242,6 +250,7 @@
   #define IP_PORT 2560
   #define SCROLLMODE 1
   #define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
+  // #define MOTOR_SHIELD_DC
 
   // SSD1306: 0.96'' OLED: 128,64 OR SSD1309: 2.4'' 128,64
   #define OLED_DRIVER 128,64

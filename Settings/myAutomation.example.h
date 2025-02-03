@@ -25,6 +25,7 @@ AUTOSTART SEQUENCE(102)
 DONE
 #endif
 
+#ifdef MOTOR_SHIELD_DC
 /* Set Default A:DCC Main, B:PROG */
 AUTOMATION(500, "1: A Main, B Prog")
     SET_TRACK(A,MAIN)
@@ -54,10 +55,12 @@ AUTOMATION(503, "4: B DC (99)")
     SET_TRACK(B,DC)
     LCD (7,"A None, B DC (99)")
 DONE 
+#endif
 
 /* Set Default at Start A:DCC Main, B:PROG */
 AUTOSTART SEQUENCE(100)
     SET_TRACK(A, MAIN)
     SET_TRACK(B, PROG)
     LCD (7,"A Main, B Prog")
+    LCD (8, WIFI_HOSTNAME)
 DONE
