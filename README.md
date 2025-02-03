@@ -1,6 +1,14 @@
 # ! Fork From DCC++ EX
 This is Forked From https://github.com/DCC-EX/CommandStation-EX
 
+### Supported Motor Drivers
+To make it easier to find the documentation:
+Links to DCC-EX:
+* [Supported Motor Drivers](https://dcc-ex.com/reference/hardware/motor-boards.html)
+* [Current list of boards](https://dcc-ex.com/reference/hardware/motor-boards.html#current-list-of-boards)
+* [TrackManager DC compatible boards](https://dcc-ex.com/reference/hardware/motor-boards.html#trackmanager-dc-compatible-boards)
+
+
 ### 2.4'' I2C OLED Display (128 x 64 LCD-Display SSD1309)
 eg: https://de.aliexpress.com/item/1005006357395269.html  
 
@@ -29,6 +37,7 @@ This setting must be set for this:
     for the new options (DC) in the track manager the display no longer works
 
 <img src="/Images/IMG_20250202_113133.jpg" height="400px" title="2.4'' Display">
+<img src="/Images/IMG_20250203_191242.jpg" height="400px" title="2.4'' Display - DC Track">
 
 ##### Configuration files moved to the “Settings” subfolder
 To make the settings easier to find, the files config.h and myAutomation.h have been moved to the 'Settings' folder.
