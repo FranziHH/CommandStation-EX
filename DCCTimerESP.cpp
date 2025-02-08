@@ -83,6 +83,7 @@ int DCCTimer::freeMemory() {
 #error "DCC-EX does not support compiling with IDF version 5.0 or later. Downgrade your ESP32 library to a version that contains IDF version 4. Arduino ESP32 library 3.0.0 is too new. Use 2.0.9 to 2.0.17"
 #endif
 
+#include "DIAG.h"
 #include <driver/adc.h>
 #include <soc/sens_reg.h>
 #include <soc/sens_struct.h>
