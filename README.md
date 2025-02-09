@@ -9,6 +9,32 @@ Links to DCC-EX:
 * [TrackManager DC compatible boards](https://dcc-ex.com/reference/hardware/motor-boards.html#trackmanager-dc-compatible-boards)
 
 
+### Work in Progress
+
+Be Patient ...
+I am in the process of setting up a NUCLEO-F446ZE. WiFi works with ESP8266 or ESP32. However, mDNS does not work with the ESP32. 
+The IP address must be used there at the moment.
+I have adjusted the power display on the screen. Due to the new functions in the TrackManager, the old display no longer worked properly.
+I have also started to integrate various definitions for the config.h. But this still needs to be adjusted, it is not yet optimal.
+
+### Information about NUCLEO Boards 
+
+Affects the following boards - at the current time (February 2025) :
+- NUCLEO F413ZH
+- NUCLEO F429ZI
+- NUCLEO F446ZE
+- NUCLEO F412ZG
+- NUCLEO F439ZI
+- NUCLEO F4X9ZI
+
+Serial ports 6 and 2 are available for use with external WiFi
+from the source code:
+```
+#define SERIAL1 Serial6
+#define SERIAL3 Serial2
+```
+
+
 ### 2.4'' I2C OLED Display (128 x 64 LCD-Display SSD1309)
 eg: https://de.aliexpress.com/item/1005006357395269.html  
 

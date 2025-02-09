@@ -362,7 +362,21 @@ void  CommandDistributor::broadcastPower() {
   broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
 #endif
 #ifdef LCD_ADVANCED_POWER
-  LCD(2,F("Power %S %S %S"),trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")),trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")),join?F("J:1"):F("J:0"));
+  #if LCD_ADVANCED_POWER > 0
+  LCD(2,F("%S %S %S %S %S"), \
+        trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")), \
+        trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")), \
+        join?F("J:1"):F("J:0"), \
+        trackX[2]==1?F("C:1"):(trackX[2]==0?F("C:0"):F("C:N")) \
+        ,trackX[3]==1?F("D:1"):(trackX[3]==0?F("D:0"):F("D:N")) \
+        );
+  #else
+  LCD(2,F("Power %S %S %S"), \
+        trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")), \
+        trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")), \
+        join?F("J:1"):F("J:0") \
+        );
+  #endif
 #else
   LCD(2,F("Power %S%S"),state=='1'?F("On"): ( state=='0'? F("Off") : F("SC") ),reason);
 #endif
