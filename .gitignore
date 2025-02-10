@@ -9,6 +9,7 @@ Release/*
 .pio/
 .vscode/
 config.h
+*.config.h
 config.wifi.h
 mySetup.cpp
 myHal.cpp

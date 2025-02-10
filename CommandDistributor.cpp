@@ -310,20 +310,20 @@ void  CommandDistributor::broadcastPower() {
   byte trackcount=0;
   byte oncount=0;
   byte offcount=0;
-  byte trackX[TrackManager::MAX_TRACKS];
+  byte trackPower[TrackManager::MAX_TRACKS];
   for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
     if (TrackManager::isActive(t)) {
       trackcount++;
       // do not call getPower(t) unless isActive(t)!
       if (TrackManager::getPower(t) == POWERMODE::ON) {
-        trackX[t] = 1;
+        trackPower[t] = 1;
         oncount++;
       } else{
-        trackX[t] = 0;
+        trackPower[t] = 0;
         offcount++;
       }
     } else {
-      trackX[t] = -1;
+      trackPower[t] = -1;
     }
   }
   //DIAG(F("t=%d on=%d off=%d"), trackcount, oncount, offcount);
@@ -362,21 +362,27 @@ void  CommandDistributor::broadcastPower() {
   broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
 #endif
 #ifdef LCD_ADVANCED_POWER
-  #if LCD_ADVANCED_POWER > 0
-  LCD(2,F("%S %S %S %S %S"), \
-        trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")), \
-        trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")), \
+  if (trackcount > 2) {
+    LCD(2,F("%S %S %S %S %S"), \
+        trackPower[0]==1?F("A:1"):(trackPower[0]==0?F("A:0"):F("A:N")), \
+        trackPower[1]==1?F("B:1"):(trackPower[1]==0?F("B:0"):F("B:N")), \
         join?F("J:1"):F("J:0"), \
-        trackX[2]==1?F("C:1"):(trackX[2]==0?F("C:0"):F("C:N")) \
-        ,trackX[3]==1?F("D:1"):(trackX[3]==0?F("D:0"):F("D:N")) \
+        trackPower[2]==1?F("C:1"):(trackPower[2]==0?F("C:0"):F("C:N")) \
+        ,trackPower[3]==1?F("D:1"):(trackPower[3]==0?F("D:0"):F("D:N")) \
         );
-  #else
-  LCD(2,F("Power %S %S %S"), \
-        trackX[0]==1?F("A:1"):(trackX[0]==0?F("A:0"):F("A:N")), \
-        trackX[1]==1?F("B:1"):(trackX[1]==0?F("B:0"):F("B:N")), \
+    LCD (7,F("A %S, B %S"), TrackManager::getModeName(TrackManager::getMode(0)), TrackManager::getModeName(TrackManager::getMode(1)));
+    LCD (8,F("C %S, D %S"), TrackManager::getModeName(TrackManager::getMode(2)), TrackManager::getModeName(TrackManager::getMode(3)));
+  } else {
+    LCD(2,F("Power %S %S %S"), \
+        trackPower[0]==1?F("A:1"):(trackPower[0]==0?F("A:0"):F("A:N")), \
+        trackPower[1]==1?F("B:1"):(trackPower[1]==0?F("B:0"):F("B:N")), \
         join?F("J:1"):F("J:0") \
         );
-  #endif
+    LCD (7,F("A %S, B %S"), TrackManager::getModeName(TrackManager::getMode(0)), TrackManager::getModeName(TrackManager::getMode(1)));
+    #ifdef WIFI_HOSTNAME
+    LCD (8,F(WIFI_HOSTNAME));
+    #endif
+  }
 #else
   LCD(2,F("Power %S%S"),state=='1'?F("On"): ( state=='0'? F("Off") : F("SC") ),reason);
 #endif
