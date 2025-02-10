@@ -17,6 +17,16 @@ The IP address must be used there at the moment.
 I have adjusted the power display on the screen. Due to the new functions in the TrackManager, the old display no longer worked properly.
 I have also started to integrate various definitions for the config.h. But this still needs to be adjusted, it is not yet optimal.
 
+
+### NUCLEO - F1446ZE
+
+<img src="/Images/IMG_20250210_183817.jpg" height="400px" title="Nucleo Case with Arduino Holder">
+
+I designed a case for Nucleo 144 boards.
+The 3D printing files can be found on Thingiverse:  
+https://www.thingiverse.com/thing:6944788  
+
+
 ### Information about NUCLEO Boards 
 
 Affects the following boards - at the current time (February 2025) :
