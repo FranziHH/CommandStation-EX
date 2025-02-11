@@ -534,6 +534,7 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #define GREEN(signal_id) OPCODE_GREEN,V(signal_id),
 #define GET_POWER(track) OPCODE_GET_POWER,V(TRACK_NUMBER_##track),
 #define GET_TRACK(track) OPCODE_GET_TRACK,V(TRACK_NUMBER_##track),
+#define GET_TRACK_MODE(track,mode) OPCODE_SET_TRACK,V(TRACK_MODE_##mode  <<8 | TRACK_NUMBER_##track),
 #define HAL(haltype,params...)
 #define HAL_IGNORE_DEFAULTS
 #define IF(sensor_id) OPCODE_IF,V(sensor_id),

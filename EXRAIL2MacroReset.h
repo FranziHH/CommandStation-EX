@@ -75,6 +75,7 @@
 #undef GREEN
 #undef GET_POWER
 #undef GET_TRACK
+#undef GET_TRACK_MODE
 #undef HAL
 #undef HAL_IGNORE_DEFAULTS
 #undef IF 
@@ -259,6 +260,7 @@
 #define GREEN(signal_id)
 #define GET_POWER(track)
 #define GET_TRACK(track)
+#define GET_TRACK_MODE(track,mode)
 #define HAL(haltype,params...)
 #define HAL_IGNORE_DEFAULTS
 #define IF(sensor_id) 

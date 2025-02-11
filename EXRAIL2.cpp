@@ -749,6 +749,16 @@ void RMFT2::loop2() {
     }
     break;
 
+  case OPCODE_GET_TRACK_MODE:
+    // operand is trackmode<<8 | track id
+    // 'ALL' cannot be used here
+    if (getOperand(1) == TRACK_NUMBER_ALL) {
+      skipIf=true;
+    } else {
+      skipIf=(!TrackManager::getMode(getOperand(1)) != operand);
+    }
+    break;
+    
   case OPCODE_SET_POWER:
       // operand is TRACK_POWER , trackid
         //byte thistrack=getOperand(1);
