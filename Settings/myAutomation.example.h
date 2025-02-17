@@ -62,28 +62,87 @@ AUTOSTART SEQUENCE(141)
 DONE
 #endif
 
-/* Select Button A */
+/* Select Button A - DCC */
 #ifdef SELECT_BUTTON_A
 AUTOSTART SEQUENCE(112)
     IF(SELECT_BUTTON_A)
         AT(-SELECT_BUTTON_A)
             // 'ALL' cannot be used here
             IF_TRACK_MODE(A,MAIN)
-                SET_TRACK(A,PROG)
-                SET_TRACK(B,MAIN)
-            ELSE
-                IF_TRACK_MODE(A,PROG)
-                    SETLOCO(99)
-                    SET_TRACK(A,DC)
+                IF_TRACK_MODE(B,PROG)
+                    SET_TRACK(A,PROG)
                     SET_TRACK(B,MAIN)
                 ELSE 
-                    //SETLOCO(99)
                     SET_TRACK(A,MAIN)
                     SET_TRACK(B,PROG)
+                ENDIF 
+            ELSE 
+                IF_TRACK_MODE(A,DC)
+                    IF_TRACK_MODE(B,DC)
+                        SETLOCO(99)
+                        SET_TRACK(A,DC)
+                        SET_TRACK(B,MAIN)
+                    ELSE 
+                        IF_TRACK_MODE(B,MAIN)
+                            SET_TRACK(A,MAIN)
+                            SET_TRACK(B,MAIN)
+                        ELSE
+                            SETLOCO(98)
+                            SET_TRACK(A,DC)
+                            SETLOCO(99)
+                            SET_TRACK(B,DC)
+                        ENDIF
+                    ENDIF 
+                ELSE 
+                    IF_TRACK_MODE(B,MAIN)
+                        SETLOCO(99)
+                        SET_TRACK(A,PROG)
+                        SET_TRACK(B,DC)
+                    ELSE 
+                        SETLOCO(99)
+                        SET_TRACK(A,DC)
+                        SET_TRACK(B,PROG)
+                    ENDIF 
                 ENDIF
             ENDIF
     ENDIF
     FOLLOW(112)
+DONE
+#endif
+
+/* Select Button B - DC */
+#ifdef SELECT_BUTTON_B
+AUTOSTART SEQUENCE(122)
+    IF(SELECT_BUTTON_B)
+        AT(-SELECT_BUTTON_B)
+            // 'ALL' cannot be used here
+            IF_TRACK_MODE(A,DC)
+                IF_TRACK_MODE(B,DC)
+                    SETLOCO(98)
+                    SET_TRACK(A,DCX)
+                    SETLOCO(99)
+                    SET_TRACK(B,DC)
+                ELSE 
+                    SETLOCO(98)
+                    SET_TRACK(A,DCX)
+                    SETLOCO(99)
+                    SET_TRACK(B,DCX)
+                ENDIF 
+            ELSE
+                IF_TRACK_MODE(B,DC)
+                    SETLOCO(98)
+                    SET_TRACK(A,DC)
+                    SETLOCO(99)
+                    SET_TRACK(B,DCX)
+                ELSE 
+                    SETLOCO(98)
+                    SET_TRACK(A,DC)
+                    SETLOCO(99)
+                    SET_TRACK(B,DC)
+                ENDIF 
+            ENDIF
+    ENDIF
+    FOLLOW(122)
 DONE
 #endif
 
@@ -100,49 +159,8 @@ DONE
 #endif
 
 /*
-#ifdef MOTOR_SHIELD_DC
-/* Set Default A:DCC Main, B:PROG * /
-AUTOMATION(500, "1: A Main, B Prog")
-    SET_TRACK(A,MAIN)
-    SET_TRACK(B,PROG)
-DONE
-
-/* Set A:PROG, B:DCC Main* /
-AUTOMATION(501, "2: A Prog, B Main")
-    SET_TRACK(A,PROG)
-    SET_TRACK(B,MAIN)
-DONE
-
-/* Set A:DC, B:NONE * /
-AUTOMATION(502, "3: A DC (99)")
-    SETLOCO(99)
-    SET_TRACK(A,DC)
-    SET_TRACK(B,NONE)
-DONE 
-
-/* Set A:NONE, B:DC * /
-AUTOMATION(503, "4: B DC (99)")
-    SETLOCO(99)
-    SET_TRACK(A,NONE)
-    SET_TRACK(B,DC)
-DONE 
-
-/* Set Default at Start A:DCC Main, B:PROG * /
-AUTOSTART SEQUENCE(100)
-    SETLOCO(99)
-    SET_TRACK(A, DC)
-    SET_TRACK(B, MAIN)
-DONE
-#else
-/* Set Default at Start A:DCC Main, B:PROG * /
-AUTOSTART SEQUENCE(100)
-    SET_TRACK(A, MAIN)
-    SET_TRACK(B, PROG)
-DONE
-#endif
-*/
-
 AUTOSTART SEQUENCE(100)
     SETLOCO(99)
     SET_TRACK(A, DC)
     SET_TRACK(B, DC)
+*/
