@@ -532,9 +532,6 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #define FTOGGLE(func) OPCODE_FTOGGLE,V(func),
 #define FWD(speed) OPCODE_FWD,V(speed),
 #define GREEN(signal_id) OPCODE_GREEN,V(signal_id),
-#define GET_POWER(track) OPCODE_GET_POWER,V(TRACK_NUMBER_##track),
-#define GET_TRACK(track) OPCODE_GET_TRACK,V(TRACK_NUMBER_##track),
-#define GET_TRACK_MODE(track,mode) OPCODE_SET_TRACK,V(TRACK_MODE_##mode  <<8 | TRACK_NUMBER_##track),
 #define HAL(haltype,params...)
 #define HAL_IGNORE_DEFAULTS
 #define IF(sensor_id) OPCODE_IF,V(sensor_id),
@@ -553,6 +550,9 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #ifndef IO_NO_HAL
 #define IFTTPOSITION(id,position) OPCODE_IFTTPOSITION,V(id),OPCODE_PAD,V(position),
 #endif
+#define IF_POWER(track) OPCODE_IF_POWER,V(TRACK_NUMBER_##track),
+#define IF_TRACK(track) OPCODE_IF_TRACK,V(TRACK_NUMBER_##track),
+#define IF_TRACK_MODE(track,mode) OPCODE_IF_TRACK_MODE,V(TRACK_MODE_##mode  <<8 | TRACK_NUMBER_##track),
 #define IF_MAIN_POWERON OPCODE_IF_MAIN_POWERON,0,0,
 #define IF_PROG_POWERON OPCODE_IF_PROG_POWERON,0,0,
 #define IF_JOINED OPCODE_IF_JOINED,0,0,

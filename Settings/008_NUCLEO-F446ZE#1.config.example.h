@@ -41,5 +41,18 @@
 #define FASTCLOCK_READABLE
 
 // Hardware Button, used with EX-RAIL
-// #define EMERGENCY_BUTTON 4 // Arduino Pin #4 -> Pin2 doesn't work
-// #define POWER_BUTTON_A 4
+// GPIO pins on MCP23017 address 0x20 are accessed using pin numbers 164 to 179
+#define EMERGENCY_BUTTON 168
+
+#define POWER_BUTTON_A 164
+#define POWER_BUTTON_B 165
+#define POWER_BUTTON_C 166
+#define POWER_BUTTON_D 167
+
+
+#define SELECT_BUTTON_A 172
+/*
+#define SELECT_BUTTON_B 173
+#define SELECT_BUTTON_C 174
+#define SELECT_BUTTON_D 175
+*/

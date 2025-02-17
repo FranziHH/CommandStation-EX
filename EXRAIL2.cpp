@@ -724,55 +724,19 @@ void RMFT2::loop2() {
     TrackManager::setJoin(false);
     break;
 
-  case OPCODE_GET_POWER:
-    if (operand == TRACK_NUMBER_ALL) {
-      bool onFlg = false;
-      for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
-        if (TrackManager::isActive(t)) {
-          if (TrackManager::getPower(t) == POWERMODE::ON) {
-            onFlg = true;
-          }
-        }
-      }
-      skipIf=!onFlg;
-    } else {
-      skipIf=(TrackManager::getPower(operand)==POWERMODE::OFF);
-    }
-    break;
-    
-  case OPCODE_GET_TRACK:
-    // 'ALL' cannot be used here
-    if (operand == TRACK_NUMBER_ALL) {
-      skipIf=true;
-    } else {
-      skipIf=(!TrackManager::isActive(operand));
-    }
-    break;
-
-  case OPCODE_GET_TRACK_MODE:
-    // operand is trackmode<<8 | track id
-    // 'ALL' cannot be used here
-    if (getOperand(1) == TRACK_NUMBER_ALL) {
-      skipIf=true;
-    } else {
-      skipIf=(!TrackManager::getMode(getOperand(1)) != operand);
-    }
-    break;
-    
   case OPCODE_SET_POWER:
       // operand is TRACK_POWER , trackid
-        //byte thistrack=getOperand(1);
-        if (getOperand(1) == TRACK_NUMBER_ALL) {
-          for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
-            if (TrackManager::isActive(t)) {
-              TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, t);
-            }
+      //byte thistrack=getOperand(1);
+      if (getOperand(1) == TRACK_NUMBER_ALL) {
+        for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
+          if (TrackManager::isActive(t)) {
+            TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, t);
           }
-        } else {
-          TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, getOperand(1));
         }
-
-    break;
+      } else {
+        TrackManager::setTrackPower(operand == TRACK_POWER_1 ? POWERMODE::ON : POWERMODE::OFF, getOperand(1));
+      }
+      break;
 
   case OPCODE_SET_TRACK:
       // operand is trackmode<<8 | track id
@@ -857,6 +821,45 @@ void RMFT2::loop2() {
     skipIf=Turntable::getPosition(operand)!=(int)getOperand(1);
     break;
 #endif
+
+case OPCODE_IF_POWER:
+  if (operand == TRACK_NUMBER_ALL) {
+    bool onFlg = false;
+    for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
+      if (TrackManager::isActive(t)) {
+        if (TrackManager::getPower(t) == POWERMODE::ON) {
+          onFlg = true;
+        }
+      }
+    }
+    skipIf=!onFlg;
+  } else {
+    skipIf=(TrackManager::getPower(operand)==POWERMODE::OFF);
+  }
+  break;
+
+  case OPCODE_IF_TRACK:
+    // 'ALL' cannot be used here
+    if (operand == TRACK_NUMBER_ALL) {
+      skipIf=true;
+    } else {
+      skipIf=(!TrackManager::isActive(operand));
+    }
+    break;
+
+  case OPCODE_IF_TRACK_MODE:
+    {
+      // operand is trackmode<<8 | track id
+      TRACK_MODE mode = (TRACK_MODE)(operand>>8);
+      byte track = operand & 0x0F;
+      // 'ALL' cannot be used here
+      if (track == TRACK_NUMBER_ALL) {
+        skipIf=true;
+      } else {
+        skipIf=(TrackManager::getMode(track) != mode);
+      }
+    }
+    break; 
 
   case OPCODE_IF_MAIN_POWERON:
     skipIf=(TrackManager::getMainPower()==POWERMODE::OFF);

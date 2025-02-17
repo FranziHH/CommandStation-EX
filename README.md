@@ -79,8 +79,9 @@ This setting must be set for this:
 To make the settings easier to find, the files config.h and myAutomation.h have been moved to the 'Settings' folder.
 
 ##### New ExRail Commands:
-* GET_POWER(TRACK) - is Track powerd on/off 
-* GET_TRACK(TRACK) - is Track available
+* IF_POWER(TRACK) - is Track powered on/off 
+* IF_TRACK(TRACK) - is Track available
+* IF_TRACK_MODE(TRACK, MODE) - is SET Mode on Track 
 
 ##### Example of an emergency stop
 define your button in config.h:
@@ -116,7 +117,7 @@ AUTOSTART SEQUENCE(101)
     IF(POWER_BUTTON_A)
         AT(-POWER_BUTTON_A)
             // 'ALL' cannot be used here
-            GET_POWER(A)
+            IF_POWER(A)
                 SET_POWER(A,OFF)
             ELSE
                 SET_POWER(A,ON)

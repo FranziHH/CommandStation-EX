@@ -73,9 +73,6 @@
 #undef FREE 
 #undef FWD 
 #undef GREEN
-#undef GET_POWER
-#undef GET_TRACK
-#undef GET_TRACK_MODE
 #undef HAL
 #undef HAL_IGNORE_DEFAULTS
 #undef IF 
@@ -92,6 +89,9 @@
 #undef IFTHROWN
 #undef IFTIMEOUT
 #undef IFTTPOSITION
+#undef IF_POWER
+#undef IF_TRACK
+#undef IF_TRACK_MODE
 #undef IF_MAIN_POWERON
 #undef IF_PROG_POWERON
 #undef IF_JOINED
@@ -258,9 +258,6 @@
 #define FTOGGLE(func)
 #define FWD(speed) 
 #define GREEN(signal_id)
-#define GET_POWER(track)
-#define GET_TRACK(track)
-#define GET_TRACK_MODE(track,mode)
 #define HAL(haltype,params...)
 #define HAL_IGNORE_DEFAULTS
 #define IF(sensor_id) 
@@ -277,6 +274,9 @@
 #define IFRESERVE(block)
 #define IFTIMEOUT
 #define IFTTPOSITION(turntable_id,position)
+#define IF_POWER(track)
+#define IF_TRACK(track)
+#define IF_TRACK_MODE(track,mode)
 #define IF_MAIN_POWERON
 #define IF_PROG_POWERON
 #define IF_JOINED
