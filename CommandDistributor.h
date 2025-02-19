@@ -40,7 +40,6 @@ public:
   enum clientType: byte {NONE_TYPE,COMMAND_TYPE,WITHROTTLE_TYPE,WEBSOCK_CONNECTING_TYPE,WEBSOCKET_TYPE};
 private:
   static void broadcastToClients(clientType type);
-  static char * getTrackAddr(byte t);
   static StringBuffer * broadcastBufferWriter;
   #ifdef CD_HANDLE_RING
     static RingStream * ring;

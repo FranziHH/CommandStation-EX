@@ -363,11 +363,17 @@ void  CommandDistributor::broadcastPower() {
 #endif
 #ifdef LCD_ADVANCED_POWER
 
+  char trackAddr_0[10] = "";
+  char trackAddr_1[10] = "";
+
+  if (TrackManager::returnDCAddr(0) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(0));
+  if (TrackManager::returnDCAddr(1) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(1));
+
   LCD(7,F("A %S%S, B %S%S"), \
     TrackManager::getModeName(TrackManager::getMode(0)), \
-    getTrackAddr(0), \
+    trackAddr_0, \
     TrackManager::getModeName(TrackManager::getMode(1)), \
-    getTrackAddr(1)
+    trackAddr_1
   );
 
   if (trackcount > 2) {
@@ -378,12 +384,15 @@ void  CommandDistributor::broadcastPower() {
         trackPower[2]==1?F("C:1"):(trackPower[2]==0?F("C:0"):F("C:N")) \
         ,trackPower[3]==1?F("D:1"):(trackPower[3]==0?F("D:0"):F("D:N")) \
         );
-        
+
+    if (TrackManager::returnDCAddr(2) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(2));
+    if (TrackManager::returnDCAddr(3) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(3));
+
     LCD(8,F("A %S%S, B %S%S"), \
       TrackManager::getModeName(TrackManager::getMode(2)), \
-      getTrackAddr(2), \
+      trackAddr_0, \
       TrackManager::getModeName(TrackManager::getMode(3)), \
-      getTrackAddr(3)
+      trackAddr_1
     );
 
   } else {
@@ -400,13 +409,6 @@ void  CommandDistributor::broadcastPower() {
 #else
   LCD(2,F("Power %S%S"),state=='1'?F("On"): ( state=='0'? F("Off") : F("SC") ),reason);
 #endif
-}
-
-char* CommandDistributor::getTrackAddr(byte t) {
-  char* trackAddr = (char*)malloc(10);
-  trackAddr[0] = '\0';
-  if (TrackManager::returnDCAddr(t) > 0) snprintf(trackAddr, sizeof(trackAddr), ":%d", TrackManager::returnDCAddr(t));
-  return trackAddr;
 }
 
 void CommandDistributor::broadcastRaw(clientType type, char * msg) {
