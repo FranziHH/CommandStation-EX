@@ -79,7 +79,7 @@ AUTOSTART SEQUENCE(112)
             ELSE 
                 IF_TRACK_MODE(A,DC)
                     IF_TRACK_MODE(B,DC)
-                        SETLOCO(99)
+                        SETLOCO(98)
                         SET_TRACK(A,DC)
                         SET_TRACK(B,MAIN)
                     ELSE 
@@ -95,11 +95,11 @@ AUTOSTART SEQUENCE(112)
                     ENDIF 
                 ELSE 
                     IF_TRACK_MODE(B,MAIN)
-                        SETLOCO(99)
                         SET_TRACK(A,PROG)
+                        SETLOCO(99)
                         SET_TRACK(B,DC)
                     ELSE 
-                        SETLOCO(99)
+                        SETLOCO(98)
                         SET_TRACK(A,DC)
                         SET_TRACK(B,PROG)
                     ENDIF 
@@ -163,4 +163,9 @@ AUTOSTART SEQUENCE(100)
     SETLOCO(99)
     SET_TRACK(A, DC)
     SET_TRACK(B, DC)
+DONE
 */
+
+AUTOSTART SEQUENCE(100)
+    SERIAL2("TEST on SERIAL 2\n")
+DONE

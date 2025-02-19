@@ -26,12 +26,17 @@
 
 // #define ENABLE_ETHERNET true
 
-// FastClock serial1
-//#define SERIAL1_COMMANDS
+// on NUCLEO mapped to Hardware Serial6
+// WiFi serial is connected on serial6 -> can't use for others
+// #define SERIAL1_COMMANDS
+
 // HC-05 or HC-12 serial2 Bluetooth or Wireless Serial
-//#define SERIAL2_COMMANDS
-// WiFi serial is connected on serial2 -> can't use for others
+// pins PD5 / PD6
+#define SERIAL2_COMMANDS
+
 //#define SERIAL3_COMMANDS
+
+// on NUCLEO not Available, why EVER
 //#define SERIAL4_COMMANDS
 //#define SERIAL5_COMMANDS
 //#define SERIAL6_COMMANDS
