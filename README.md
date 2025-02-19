@@ -17,6 +17,16 @@ The IP address must be used there at the moment.
 I have adjusted the power display on the screen. Due to the new functions in the TrackManager, the old display no longer worked properly.
 I have also started to integrate various definitions for the config.h. But this still needs to be adjusted, it is not yet optimal.
 
+### Last Changes
+
+##### 2025-02-19
+- Display in DC operation: used LocoAdress is displayed
+- Keypad with I2C Expander MPC23017 to operate the track manager, track voltage on/off
+- Serial transmission with radio module HC-12
+
+<img src="/Images/IMG_20250219_192507.jpg" height="400px" title="Display with new Functions">   
+<br>
+<br>
 
 ### NUCLEO - F1446ZE
 
