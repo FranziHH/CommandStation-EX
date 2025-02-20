@@ -12,8 +12,10 @@ I haven't found the USB to Serial Adapter anywhere else
 The microswitch is required for programming.
 This switch connects GND to the EN pin
 
-The [*.stl files](3D-Print/DCC%20HC12%20Case.7z) are included for the housing
-<img src="3D-Print/HC12 Case.png" title="Case for USB-Stick"> 
+The [*.stl files](3D-Print/DCC%20HC12%20Case.7z) are included for the housing   
+
+<img src="3D-Print/HC12 Case.png" title="Case for USB-Stick">   
+
 
 ### Images
 
