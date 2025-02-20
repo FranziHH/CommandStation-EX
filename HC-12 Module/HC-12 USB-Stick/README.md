@@ -1,5 +1,8 @@
 # HC-12 USB-Stick
 
+<img src="Images/IMG_20250220_183227.jpg" height="400px">   
+
+
 ### Parts List
 These are just examples for procurement.
 I haven't found the USB to Serial Adapter anywhere else
@@ -27,5 +30,3 @@ The [*.stl files](3D-Print/DCC%20HC12%20Case.7z) are included for the housing
 <img src="Images/IMG_20250220_182937.jpg" height="400px">   
 <img src="Images/IMG_20250220_182959.jpg" height="400px">   
 <img src="Images/IMG_20250220_183140.jpg" height="400px">   
-<img src="Images/IMG_20250220_183227.jpg" height="400px">   
-
