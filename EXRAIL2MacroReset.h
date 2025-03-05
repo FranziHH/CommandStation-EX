@@ -663,7 +663,7 @@
  * @brief Checks if MAIN POWERON
  * @see IF
  */
-#define IF_PROG_POWERON
+#define IF_MAIN_POWERON
 /**
  * @def IF_PROG_POWERON
  * @brief Checks if PROG POWERON
