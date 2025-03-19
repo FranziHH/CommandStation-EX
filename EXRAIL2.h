@@ -77,6 +77,7 @@ enum OPCODE : byte {OPCODE_THROW,OPCODE_CLOSE,OPCODE_TOGGLE_TURNOUT,
              OPCODE_ROUTE_ACTIVE,OPCODE_ROUTE_INACTIVE,OPCODE_ROUTE_HIDDEN,
              OPCODE_ROUTE_DISABLED,
              OPCODE_STASH,OPCODE_CLEAR_STASH,OPCODE_CLEAR_ALL_STASH,OPCODE_PICKUP_STASH,
+             OPCODE_CLEAR_ANY_STASH,
              OPCODE_ONBUTTON,OPCODE_ONSENSOR,
              OPCODE_NEOPIXEL,
              OPCODE_ONBLOCKENTER,OPCODE_ONBLOCKEXIT,
@@ -98,7 +99,8 @@ enum OPCODE : byte {OPCODE_THROW,OPCODE_CLOSE,OPCODE_TOGGLE_TURNOUT,
              OPCODE_IF_TRACK,OPCODE_IF_TRACK_MODE,
              OPCODE_IF_MAIN_POWERON,
              OPCODE_IF_PROG_POWERON,
-             OPCODE_IF_JOINED
+             OPCODE_IF_JOINED,
+             OPCODE_IFSTASH,
              };
 
 // Ensure thrunge_lcd is put last as there may be more than one display, 
@@ -142,7 +144,7 @@ enum SignalType {
   static const byte FEATURE_LCC   = 0x40;
   static const byte FEATURE_ROSTER= 0x20;
   static const byte FEATURE_ROUTESTATE= 0x10;
-  static const byte FEATURE_STASH = 0x08;
+  // spare = 0x08;
   static const byte FEATURE_BLINK = 0x04;
   static const byte FEATURE_SENSOR = 0x02;
   static const byte FEATURE_BLOCK = 0x01;
