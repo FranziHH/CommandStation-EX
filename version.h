@@ -3,7 +3,8 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.20 FW"
+#define VERSION "5.5.21 FW"
+// 5.5.21 - Backed out the broken merge with frequency change and 
 // 5.5.20 - EXRAIL SET/RESET assert fix  
 // 5.5.19 - Railcom change to use RailcomCollector device  
 // 5.5.18 - New STASH internals 
