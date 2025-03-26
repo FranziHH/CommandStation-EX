@@ -17,6 +17,11 @@ StepDown LM2596 (eine Spannungsversorgung für Gleis und Zentrale)
 https://de.aliexpress.com/item/1005004904872120.html
 0,80€
 
+Prototyp PCB Expansion Board für Arduino (optional)
+https://de.aliexpress.com/item/1005006765478920.html
+1,39€
+
+
 Preise vom 25.03.2025
 
-Gesamt: 11,57€
+Gesamt: 12,96€
