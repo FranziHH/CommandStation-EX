@@ -35,7 +35,7 @@
 #include "EXRAIL2.h"
 #include "CommandDistributor.h"
 
-bool FAST_CLOCK_EXISTS = true;
+extern bool FAST_CLOCK_EXISTS; // Nur die Deklaration
 
 class EXFastClock : public IODevice {
 public:
