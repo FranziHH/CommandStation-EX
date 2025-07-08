@@ -17,17 +17,24 @@
  *  along with CommandStation.  If not, see <https://www.gnu.org/licenses/>.
  */
 #ifdef ARDUINO_ARCH_ESP32
-#define DIAG_LED 33
 #include "Sniffer.h"
 #include "DIAG.h"
 //extern Sniffer *DCCSniffer;
 
 static void packeterror() {
-  digitalWrite(DIAG_LED,HIGH);
+#ifndef WIFI_LED
+#ifdef SNIFFER_LED
+  digitalWrite(SNIFFER_LED,HIGH);
+#endif
+#endif
 }
 
 static void clear_packeterror() {
-  digitalWrite(DIAG_LED,LOW);
+#ifndef WIFI_LED
+#ifdef SNIFFER_LED
+  digitalWrite(SNIFFER_LED,LOW);
+#endif
+#endif
 }
 
 static bool halfbits2byte(uint16_t b, byte *dccbyte) {
@@ -61,13 +68,17 @@ static bool halfbits2byte(uint16_t b, byte *dccbyte) {
 }
 
 static void IRAM_ATTR blink_diag(int limit) {
+#ifndef WIFI_LED
+#ifdef SNIFFER_LED
   delay(500);
   for (int n=0 ; n<limit; n++) {
-    digitalWrite(DIAG_LED,HIGH);
+    digitalWrite(SNIFFER_LED,HIGH);
     delay(200);
-    digitalWrite(DIAG_LED,LOW);
+    digitalWrite(SNIFFER_LED,LOW);
     delay(200);
   }
+#endif
+#endif
 }
 
 static bool IRAM_ATTR cap_ISR_cb(mcpwm_unit_t mcpwm, mcpwm_capture_channel_id_t cap_channel, const cap_event_data_t *edata,void *user_data) {
@@ -97,8 +108,12 @@ Sniffer::Sniffer(byte snifferpin) {
     .capture_cb = cap_ISR_cb,                 // user defined ISR/callback
     .user_data = (void *)this                 // user defined argument to callback
   };
-  pinMode(DIAG_LED ,OUTPUT);
-  blink_diag(3); // so that we know we have DIAG_LED
+#ifndef WIFI_LED
+#ifdef SNIFFER_LED
+  pinMode(SNIFFER_LED ,OUTPUT);
+#endif
+#endif
+  blink_diag(3); // so that we know we have SNIFFER_LED
   DIAG(F("Init sniffer on pin %d"), snifferpin);
   ESP_ERROR_CHECK(mcpwm_capture_enable_channel(MCPWM_UNIT_0, MCPWM_SELECT_CAP0, &MCPWM_cap_config));
 }
@@ -181,19 +196,25 @@ void IRAM_ATTR Sniffer::processInterrupt(int32_t capticks, bool posedge) {
 	    inpacket = false;
 	    dcclen = currentbyte+1;
 	    debugfield = bitfield;
-	    // put it into the out packet
-	    if (fetchflag) {
-	      // not good, should have been fetched
-              // blink_diag(1);
-	      packeterror(); // or better?
+	    // We have something we want to give to the outpacket queue
+	    // Check length of outpacket queue
+	    if (outpacket.size() > 3) {
+	      // not good, these should have been fetched
+	      // the arbitraty number to check is THREE (see the holy grail)
+              // blink_diag(1); DO NOT DO THIS HERE -> will crash
+	      packeterror(); // or what to do better?
+	      // take emergency action:
+	      while (!outpacket.empty()) {
+		outpacket.pop_front();
+	      }
 	    }
 	    lastendofpacket = millis();
 	    DCCPacket temppacket(dccbytes, dcclen);
 	    if (!(temppacket == prevpacket)) {
 	      // we have something new to offer to the fetch routine
+	      // put it into the outpacket queue
 	      outpacket.push_back(temppacket);
 	      prevpacket = temppacket;
-	      fetchflag = true;
 	    }
 	    return;
 	  }
