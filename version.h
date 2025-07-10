@@ -3,7 +3,9 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.33 FW"
+#define VERSION "5.5.34 FW"
+// 5.5.34 - STM32: Remove I2C interrupt blocking waveform interrupt
+//        - Bugfix: Negative route Ids
 // 5.5.33 - Fix CONFIG_SERVO when default PCA9685 definition used.
 // 5.5.32 - Feature: Enable sniffer on CSB-1
 // 5.5.31 - <JL screen startRow> track status command
