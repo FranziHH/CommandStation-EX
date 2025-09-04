@@ -6,8 +6,6 @@
 // #define MOTOR_SHIELD_TYPE EX8874_SHIELD
 #define MOTOR_SHIELD_TYPE EX8874_DC_SHIELD
 
-// #define MOTOR_SHIELD_DC
-
 // SSD1306: 0.96'' OLED: 128,64 OR SSD1309: 2.4'' 128,64
 #define OLED_DRIVER 128,64
 // max 8 Lines - default are 7
