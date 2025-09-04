@@ -357,38 +357,51 @@ void  CommandDistributor::broadcastPower() {
   broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
 #endif
 #ifdef LCD_ADVANCED_POWER
+  #if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
+    LCD(7,F("A %S, B %S"), \
+      TrackManager::getModeName(TrackManager::getMode(0)), \
+      TrackManager::getModeName(TrackManager::getMode(1))
+    );
+  #else
+    char trackAddr_0[10] = "";
+    char trackAddr_1[10] = "";
 
-  char trackAddr_0[10] = "";
-  char trackAddr_1[10] = "";
+    if (TrackManager::returnDCAddr(0) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(0));
+    if (TrackManager::returnDCAddr(1) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(1));
 
-  if (TrackManager::returnDCAddr(0) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(0));
-  if (TrackManager::returnDCAddr(1) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(1));
-
-  LCD(7,F("A %S%S, B %S%S"), \
-    TrackManager::getModeName(TrackManager::getMode(0)), \
-    trackAddr_0, \
-    TrackManager::getModeName(TrackManager::getMode(1)), \
-    trackAddr_1
-  );
+    LCD(7,F("A %S%S, B %S%S"), \
+      TrackManager::getModeName(TrackManager::getMode(0)), \
+      trackAddr_0, \
+      TrackManager::getModeName(TrackManager::getMode(1)), \
+      trackAddr_1
+    );
+  #endif
 
   if (trackcount > 2) {
     LCD(2,F("%S %S %S %S %S"), \
         trackPower[0]==1?F("A:1"):(trackPower[0]==0?F("A:0"):F("A:N")), \
         trackPower[1]==1?F("B:1"):(trackPower[1]==0?F("B:0"):F("B:N")), \
         join?F("J:1"):F("J:0"), \
-        trackPower[2]==1?F("C:1"):(trackPower[2]==0?F("C:0"):F("C:N")) \
-        ,trackPower[3]==1?F("D:1"):(trackPower[3]==0?F("D:0"):F("D:N")) \
+        trackPower[2]==1?F("C:1"):(trackPower[2]==0?F("C:0"):F("C:N")), \
+        trackPower[3]==1?F("D:1"):(trackPower[3]==0?F("D:0"):F("D:N"))
         );
+    
+    #if defined(ARDUINO_AVR_MEGA) || defined(ARDUINO_AVR_MEGA2560)
+      LCD(8,F("A %S, B %S"), \
+        TrackManager::getModeName(TrackManager::getMode(2)), \
+        TrackManager::getModeName(TrackManager::getMode(3))
+      );
+    #else
+      if (TrackManager::returnDCAddr(2) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(2));
+      if (TrackManager::returnDCAddr(3) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(3));
 
-    if (TrackManager::returnDCAddr(2) > 0) snprintf(trackAddr_0, sizeof(trackAddr_0), ":%d", TrackManager::returnDCAddr(2));
-    if (TrackManager::returnDCAddr(3) > 0) snprintf(trackAddr_1, sizeof(trackAddr_1), ":%d", TrackManager::returnDCAddr(3));
-
-    LCD(8,F("A %S%S, B %S%S"), \
-      TrackManager::getModeName(TrackManager::getMode(2)), \
-      trackAddr_0, \
-      TrackManager::getModeName(TrackManager::getMode(3)), \
-      trackAddr_1
-    );
+      LCD(8,F("A %S%S, B %S%S"), \
+        TrackManager::getModeName(TrackManager::getMode(2)), \
+        trackAddr_0, \
+        TrackManager::getModeName(TrackManager::getMode(3)), \
+        trackAddr_1
+      );
+    #endif
 
   } else {
     LCD(2,F("Power %S %S %S"), \
