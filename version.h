@@ -3,7 +3,8 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.45 FW"
+#define VERSION "5.5.46 FW"
+// 5.5.46 - Major rewrite of loco table 
 // 5.5.45 - Incoming <@ row col "text"> command
 //        - Bugfix: <t cab> for unknown loco
 //        - new <R LOCOID> and <R CONSIST> commands
