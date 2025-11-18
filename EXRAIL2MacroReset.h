@@ -73,7 +73,8 @@
 #undef FON 
 #undef FORGET
 #undef FTOGGLE
-#undef FREE 
+#undef FREE
+#undef FREEALL
 #undef FWD 
 #undef GREEN
 #undef HAL
@@ -101,6 +102,10 @@
 #undef IF_PROG_POWERON
 #undef IF_JOINED
 #undef IFRE
+#undef IFROUTE_ACTIVE
+#undef IFROUTE_INACTIVE
+#undef IFROUTE_HIDDEN
+#undef IFROUTE_DISABLED
 #undef IFBITMAP_ALL
 #undef IFBITMAP_ANY
 #undef INVERT_DIRECTION 
@@ -192,7 +197,9 @@
 #undef SIGNAL 
 #undef SIGNALH 
 #undef SPEED 
-#undef START 
+#undef START
+#undef START_SHARED
+#undef START_SEND
 #undef STASH
 #undef STEALTH
 #undef STEALTH_GLOBAL
@@ -207,6 +214,7 @@
 #undef VIRTUAL_SIGNAL
 #undef VIRTUAL_TURNOUT
 #undef WAITFOR
+#undef WAIT_WHILE_RED
 #ifndef IO_NO_HAL
 #undef BITMAP_AND
 #undef BITMAP_OR
@@ -537,6 +545,12 @@
  */
 #define FREE(token_id) 
 /**
+ * @def FREEALL
+ * @brief Frees all logical tokens 
+ * @see RESERVE
+ */
+#define FREEALL 
+/**
  * @def FTOGGLE(func)
  * @brief Toggles function for current loco
  * @param func 
@@ -742,6 +756,34 @@
  * @param mask Binary mask applied to vpin value
  */
 #define IFBITMAP_ANY(vpin,mask)
+/** 
+ * @def IFROUTE_ACTIVE(sequence_id)
+ * @briaf Checks if route is active
+ * @see IF
+ * @param sequence_id
+ */
+#define IFROUTE_ACTIVE(sequence_id)
+/** 
+ * @def IFROUTE_INACTIVE(sequence_id)
+ * @briaf Checks if route is inactive
+ * @see IF
+ * @param sequence_id
+ */
+#define IFROUTE_INACTIVE(sequence_id)
+/** 
+ * @def IFROUTE_HIDDEN(sequence_id)
+ * @briaf Checks if route is hidden
+ * @see IF
+ * @param sequence_id
+ */
+#define IFROUTE_HIDDEN(sequence_id)
+/** 
+ * @def IFROUTE_DISABLED(sequence_id)
+ * @briaf Checks if route is disabled
+ * @see IF
+ * @param sequence_id
+ */
+#define IFROUTE_DISABLED(sequence_id)
 /**
  * @def INVERT_DIRECTION
  * @brief Marks current task so that FWD and REV commands are inverted.
@@ -1344,6 +1386,18 @@
  */
 #define START(sequence_id)
 /**
+ * @def START_SHARED(sequence_id)
+ * @brief Starts a new task at the given route/animation/sequence an share current loco with it
+ * @param sequence_id 
+ */
+#define START_SHARED(sequence_id)
+/**
+ * @def START_SEND(sequence_id)
+ * @brief Starts a new task at the given route/animation/sequence an send current loco to it. Remove loco from current task.
+ * @param sequence_id 
+ */
+#define START_SEND(sequence_id)
+/**
  * @def STASH(stash_id)
  * @brief saves cuttent tasks loco id in the stash array
  * @param stash_id  position in stash array to save loco id 
@@ -1483,6 +1537,13 @@
  */
 #define WAITFORTT(turntable_id)
 #endif
+#define VIRTUAL_SIGNAL(signal_id) 
+/**
+ * @def WAIT_WHILE_RED(signal_id)
+ * @brief Waits while signal is RED
+ * @param signal_id 
+ */
+#define WAIT_WHILE_RED(signal_id)
 /**
  * @def WITHROTTLE(msg)
  * @brief Broadcasts a string in Withrottle protocol format to all throttles using this protocol. 

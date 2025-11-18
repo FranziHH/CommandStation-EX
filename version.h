@@ -3,7 +3,12 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.47 FW"
+#define VERSION "5.5.48 FW"
+// 5.4.48 - EXRAIL improvements:
+//        - IFROUTE_HIDDEN, IFROUTE_DISABLED, IFROUTE_ACTIVE, IFROUTE_INACTIVE macros
+//        - FREEALL and </FREEALL> to free all reserves
+//        - WAIT_WHILE_RED macro to wait at red signals
+//        - START_SHARED nd START_SEND macros to share or transfer locos to new tasks
 // 5.5.47 - Make it possible to turn off max ack duration check
 //        - Wifi: Make it possible to hide the SSID
 //        - New trainbrains debug option

@@ -390,7 +390,7 @@ char RMFT2::getRouteType(int16_t id) {
 }
 
 
-RMFT2::RMFT2(int progCtr, int16_t _loco) {
+RMFT2::RMFT2(int progCtr, int16_t _loco, bool _invert) {
   progCounter=progCtr;
 
   // get an unused  task id from the flags table
@@ -404,7 +404,7 @@ RMFT2::RMFT2(int progCtr, int16_t _loco) {
   }
   delayTime=0;
   loco=_loco;
-  invert=false;
+  invert=_invert;
   blinkState=not_blink_task;
   stackDepth=0;
   onEventStartPosition=-1; // Not handling an ONxxx 
@@ -620,7 +620,11 @@ void RMFT2::loop2() {
   case OPCODE_FREE:
     setFlag(operand,0,SECTION_FLAG);
     break;
-    
+  
+  case OPCODE_FREEALL:
+    for (int i=0;i<MAX_FLAGS;i++) setFlag(i,0,SECTION_FLAG);
+    break;
+  
   case OPCODE_AT:
     blinkState=not_blink_task;
     if (readSensor(operand)) break;
@@ -808,6 +812,15 @@ void RMFT2::loop2() {
     
   case OPCODE_IFRED: // do block if signal as expected
     skipIf=!isSignal(operand,SIGNAL_RED);
+    break;
+    
+  case OPCODE_WAIT_WHILE_RED: // do block if signal as expected
+    if (isSignal(operand,SIGNAL_RED)) {
+      if (loco && (DCC::getLocoSpeedByte(loco) & 0x7f)>1) 
+          DCC::setThrottle(loco,0,DCC::getThrottleDirection(loco));
+      delayMe(500);
+      return;
+    }
     break;
     
   case OPCODE_IFAMBER: // do block if signal as expected
@@ -1051,6 +1064,23 @@ case OPCODE_IF_POWER:
       new RMFT2(newPc);
     }
     break;
+
+  case OPCODE_START_SHARED:
+    {
+      int newPc=routeLookup->find(operand);
+      if (newPc<0) break;
+      new RMFT2(newPc,loco, invert); // create new task and share loco
+    }
+    break;
+
+  case OPCODE_START_SEND:
+    {
+      int newPc=routeLookup->find(operand);
+      if (newPc<0) break;
+      new RMFT2(newPc,loco, invert); // create new task and send loco exclusive
+      loco = 0;
+    }
+    break;
     
   case OPCODE_SENDLOCO:  // cab, route
     {
@@ -1123,6 +1153,8 @@ case OPCODE_IF_POWER:
   case OPCODE_PRINT:
     printMessage(operand);
     break;
+
+  // Route state management  
   case OPCODE_ROUTE_HIDDEN:
     manageRouteState(operand,2);
     break;   
@@ -1134,6 +1166,19 @@ case OPCODE_IF_POWER:
     break;   
   case OPCODE_ROUTE_DISABLED:
     manageRouteState(operand,4);
+    break;   
+// Route state management  
+  case OPCODE_IF_ROUTE_HIDDEN:
+    skipIf=!ifRouteState(operand,2);
+    break;   
+  case OPCODE_IF_ROUTE_INACTIVE:
+    skipIf=!ifRouteState(operand,0);
+    break;   
+  case OPCODE_IF_ROUTE_ACTIVE:
+    skipIf=!ifRouteState(operand,1);
+    break;   
+  case OPCODE_IF_ROUTE_DISABLED:
+    skipIf=!ifRouteState(operand,4);
     break;   
 
   case OPCODE_STASH:
@@ -1624,6 +1669,16 @@ void RMFT2::manageRouteState(int16_t id, byte state) {
     CommandDistributor::broadcastRouteState(id,state);
   }
 }
+bool RMFT2::ifRouteState(int16_t id, byte state) {
+  if (compileFeatures && FEATURE_ROUTESTATE) {
+    // Route state must be maintained for when new throttles connect.
+    // locate route id in the Routes lookup
+    int16_t position=routeLookup->findPosition(id);
+    return position>=0 &&  routeStateArray[position]==state;
+  }
+  else return false; 
+}
+
 void RMFT2::manageRouteCaption(int16_t id,const FSH* caption) {
   if (compileFeatures && FEATURE_ROUTESTATE) {
     // Route state must be maintained for when new throttles connect.

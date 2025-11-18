@@ -186,7 +186,14 @@ void exrailHalSetup2() {
 #define ROUTE_DISABLED(id) | FEATURE_ROUTESTATE
 #undef ROUTE_CAPTION
 #define ROUTE_CAPTION(id,caption) | FEATURE_ROUTESTATE
-
+#undef IFROUTE_ACTIVE
+#define IFROUTE_ACTIVE(id) | FEATURE_ROUTESTATE
+#undef IFROUTE_INACTIVE
+#define IFROUTE_INACTIVE(id) | FEATURE_ROUTESTATE
+#undef IFROUTE_HIDDEN
+#define IFROUTE_HIDDEN(id) | FEATURE_ROUTESTATE
+#undef IFROUTE_DISABLED
+#define IFROUTE_DISABLED(id) | FEATURE_ROUTESTATE
 #undef BLINK
 #define BLINK(vpin,onDuty,offDuty) | FEATURE_BLINK
 #undef ONBUTTON
@@ -493,6 +500,7 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #define FON(func) OPCODE_FON,V(func),
 #define FORGET OPCODE_FORGET,0,0,
 #define FREE(blockid) OPCODE_FREE,V(blockid),
+#define FREEALL OPCODE_FREEALL,0,0,
 #define FTOGGLE(func) OPCODE_FTOGGLE,V(func),
 #define FWD(speed) OPCODE_FWD,V(speed),
 #define GREEN(signal_id) OPCODE_GREEN,V(signal_id),
@@ -509,6 +517,10 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #define IFRANDOM(percent) OPCODE_IFRANDOM,V(percent),
 #define IFRED(signal_id) OPCODE_IFRED,V(signal_id),
 #define IFRESERVE(block) OPCODE_IFRESERVE,V(block),
+#define IFROUTE_ACTIVE(sequence_id) OPCODE_IF_ROUTE_ACTIVE,V(sequence_id),
+#define IFROUTE_INACTIVE(sequence_id) OPCODE_IF_ROUTE_INACTIVE,V(sequence_id),
+#define IFROUTE_HIDDEN(sequence_id) OPCODE_IF_ROUTE_HIDDEN,V(sequence_id),
+#define IFROUTE_DISABLED(sequence_id) OPCODE_IF_ROUTE_DISABLED,V(sequence_id),
 #define IFSTASH(stash_id) OPCODE_IFSTASH,V(stash_id),
 #define IFSTASHED_HERE(stash_id) OPCODE_IFSTASHED_HERE,V(stash_id),
 #define IFTHROWN(turnout_id) OPCODE_IFTHROWN,V(turnout_id),
@@ -630,6 +642,8 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #define SIGNALH(redpin,amberpin,greenpin) 
 #define SPEED(speed) OPCODE_SPEED,V(speed),
 #define START(route) OPCODE_START,V(route), 
+#define START_SHARED(route) OPCODE_START_SHARED,V(route),
+#define START_SEND(route) OPCODE_START_SEND,V(route),
 #define STASH(id) OPCODE_STASH,V(id), 
 #define STOP OPCODE_SPEED,V(0), 
 #define THROW(id)  OPCODE_THROW,V(id),
@@ -653,6 +667,7 @@ int RMFT2::onLCCLookup[RMFT2::countLCCLookup];
 #ifndef IO_NO_HAL
 #define WAITFORTT(turntable_id) OPCODE_WAITFORTT,V(turntable_id),
 #endif
+#define WAIT_WHILE_RED(signal_id) OPCODE_WAIT_WHILE_RED,V(signal_id),
 #define XFOFF(cab,func) OPCODE_XFOFF,V(cab),OPCODE_PAD,V(func),
 #define XFON(cab,func) OPCODE_XFON,V(cab),OPCODE_PAD,V(func),
 #define XFTOGGLE(cab,func) OPCODE_XFTOGGLE,V(cab),OPCODE_PAD,V(func),
