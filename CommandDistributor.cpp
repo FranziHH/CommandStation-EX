@@ -291,63 +291,72 @@ void  CommandDistributor::broadcastForgetLoco(int16_t loco) {
 
 void  CommandDistributor::broadcastPower() {
   char pstr[] = "? x";
-  for(byte t=0; t<TrackManager::MAX_TRACKS; t++)
-    if (TrackManager::getPower(t, pstr))
-      broadcastReply(COMMAND_TYPE, F("<p%s>\n"),pstr);
-
   byte trackcount=0;
   byte oncount=0;
   byte offcount=0;
-  byte trackPower[TrackManager::MAX_TRACKS];
-  for(byte t=0; t<TrackManager::MAX_TRACKS; t++) {
-    if (TrackManager::isActive(t)) {
-      trackcount++;
-      // do not call getPower(t) unless isActive(t)!
-      if (TrackManager::getPower(t) == POWERMODE::ON) {
-        trackPower[t] = 1;
-        oncount++;
-      } else{
-        trackPower[t] = 0;
-        offcount++;
+  byte trackPower[TrackManager::numTracks()];
+  uint8_t numTracks = TrackManager::numTracks();
+  {
+    char trackLetter[numTracks+1];
+    trackLetter[numTracks] = '\0';
+
+    for(byte t=0; t<numTracks; t++) {
+      if (TrackManager::getPower(t, pstr))
+	broadcastReply(COMMAND_TYPE, F("<p%s>\n"),pstr);
+      if (TrackManager::isActive(t)) {
+	trackcount++;
+	// do not call getPower(t) unless isActive(t)!
+	if (TrackManager::getPower(t) == POWERMODE::ON) {
+    trackPower[t] = 1;
+	  oncount++;
+	  trackLetter[t] = t + 'A';
+	} else if (TrackManager::getPower(t) == POWERMODE::OFF) {
+    trackPower[t] = 0;
+	  offcount++;
+	  trackLetter[t] = t + 'a';
+	} else {
+    trackPower[t] = -1;
+	  trackLetter[t] = 'X';
+	}
+      } else {
+  trackPower[t] = -1;
+	trackLetter[t] = '_';
       }
+    }
+    //DIAG(F("t=%d on=%d off=%d"), trackcount, oncount, offcount);
+
+    char state='2';
+    if (oncount==0 || offcount == trackcount) // none on or all active off
+      state = '0';
+    else if (oncount == numTracks) {          // all on, no inactive tracks
+      state = '1';
+    }
+
+    if (state != '2')
+      broadcastReply(COMMAND_TYPE, F("<p%c>\n"),state);
+
+    // additional info about MAIN, PROG and JOIN
+    bool main=TrackManager::getMainPower()==POWERMODE::ON;
+    bool prog=TrackManager::getProgPower()==POWERMODE::ON;
+    bool join=TrackManager::isJoined();
+    //DIAG(F("m=%d p=%d j=%d"), main, prog, join);
+    const FSH * reason=F("");
+    if (join) {
+      reason = F(" JOIN"); // with space at start so we can append without space
+      broadcastReply(COMMAND_TYPE, F("<p1%S>\n"),reason);
     } else {
-      trackPower[t] = -1;
+      if (main) {
+	//reason = F("MAIN");
+	broadcastReply(COMMAND_TYPE, F("<p1 MAIN>\n"));
+      }
+      if (prog) {
+	//reason = F("PROG");
+	broadcastReply(COMMAND_TYPE, F("<p1 PROG>\n"));
+      }
     }
-  }
-  //DIAG(F("t=%d on=%d off=%d"), trackcount, oncount, offcount);
-
-  char state='2';
-  if (oncount==0 || offcount == trackcount)
-    state = '0';
-  else if (oncount == trackcount) {
-    state = '1';
-  }
-
-  if (state != '2')
-    broadcastReply(COMMAND_TYPE, F("<p%c>\n"),state);
-
-  // additional info about MAIN, PROG and JOIN
-  bool main=TrackManager::getMainPower()==POWERMODE::ON;
-  bool prog=TrackManager::getProgPower()==POWERMODE::ON;
-  bool join=TrackManager::isJoined();
-  //DIAG(F("m=%d p=%d j=%d"), main, prog, join);
-  const FSH * reason=F("");
-  if (join) {
-    reason = F(" JOIN"); // with space at start so we can append without space
-    broadcastReply(COMMAND_TYPE, F("<p1%S>\n"),reason);
-  } else {
-    if (main) {
-      //reason = F("MAIN");
-      broadcastReply(COMMAND_TYPE, F("<p1 MAIN>\n"));
-    }
-    if (prog) {
-      //reason = F("PROG");
-      broadcastReply(COMMAND_TYPE, F("<p1 PROG>\n"));
-    }
-  }
 #ifdef CD_HANDLE_RING
-  // send '1' if all main are on, otherwise global state (which in that case is '0' or '2')
-  broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
+    // send '1' if all main are on, otherwise global state (which in that case is '0' or '2')
+    broadcastReply(WITHROTTLE_TYPE, F("PPA%c\n"), main?'1': state);
 #endif
 #ifdef LCD_ADVANCED_POWER
 
@@ -414,8 +423,13 @@ void  CommandDistributor::broadcastPower() {
     #endif
   }
 #else
-  LCD(2,F("Power %S%S"),state=='1'?F("On"): ( state=='0'? F("Off") : F("SC") ),reason);
+  #if defined(HAS_ENOUGH_MEMORY)
+      LCD(2,F("PWR %s%S"),state=='1'? "On" : ( state=='0'? "Off" : trackLetter ),reason);
+  #else
+      LCD(2,F("PWR %s%S"),trackLetter ,reason);
+  #endif
 #endif
+}
 }
 
 void CommandDistributor::broadcastRaw(clientType type, char * msg) {
