@@ -29,10 +29,19 @@
  * be extracted to create documentation. Please maintain formatting.
  */
 
+/* Franziska Walter:
+ * Own Macros
+ * IF_POWER
+ * IF_TRACK
+ * IF_TRACK_MODE
+ * IF_MAIN_POWERON
+ * IF_PROG_POWERON
+ * IF_JOINED
+ */
+
 #define ACTIVATE(addr,subaddr)
 ///brief Send DCC Accessory Activate packet (gate on then off)///param addr DCC short address of accessory
 ///param subaddr DCC sub address
-
 
 #define ACTIVATEL(linearaddr)
 ///brief Send DCC Accessory Activate packet (gate on then off)///param linearaddr DCC linear address of accessory
@@ -317,6 +326,34 @@
 
 #define IFTTPOSITION(turntable_id,position)
 ///brief Checks if Turntable is in given position
+///see IF
+
+#define IF_POWER(track)
+///brief Checks if given track has power
+///see IF
+///param track
+
+#define IF_TRACK(track)
+///brief Checks if given track is available
+///see IF
+///param track
+
+#define IF_TRACK_MODE(track,mode)
+///brief Checks if given track has given mode
+///see IF
+///param track
+///param mode
+
+#define IF_MAIN_POWERON
+///brief Checks if MAIN POWERON
+///see IF
+
+#define IF_PROG_POWERON
+///brief Checks if PROG POWERON
+///see IF
+
+#define IF_JOINED
+///brief Checks if JOINED
 ///see IF
 
 #define IFRE(vpin,value)
