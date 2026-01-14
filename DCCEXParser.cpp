@@ -1054,10 +1054,11 @@ bool DCCEXParser::parsey(Print *stream, int16_t params, int16_t p[])
     // <y vpin FOLDER folder>
     // <y vpin STOP>
     // <y vpin VOL volume>
+    // <y vpin PAUSE>
+    // <y vpin RESUME>
     // <y vpin EQ eq>
     // <y vpin RESET>
-    // <y vpin DEBUGON|DEBUGOFF>
-
+    
     if (params<2) return false;
 
     int16_t v1=0;
@@ -1093,6 +1094,16 @@ bool DCCEXParser::parsey(Print *stream, int16_t params, int16_t p[])
         cmd=DFPlayerBase::DF_STOPPLAY;
         break;
 
+      case "PAUSE"_hk:
+        if (params!=2) return false;
+        cmd=DFPlayerBase::DF_PAUSE;
+        break;
+
+      case "RESUME"_hk:
+        if (params!=2) return false;
+        cmd=DFPlayerBase::DF_RESUME;
+        break;
+
       case "RESET"_hk:
         if (params!=2) return false;
         cmd=DFPlayerBase::DF_RESET;
@@ -1107,15 +1118,7 @@ bool DCCEXParser::parsey(Print *stream, int16_t params, int16_t p[])
       case "EQ"_hk:
         if (params!=3) return false;
         cmd=DFPlayerBase::DF_EQ;
-        v2=p[2]; // volume
-        break;
-    case "DEBUGON"_hk:
-        if (params!=2) return false;
-        cmd=DFPlayerBase::DF_DEBUGON;
-        break;
-    case "DEBUGOFF"_hk:
-        if (params!=2) return false;
-        cmd=DFPlayerBase::DF_DEBUGOFF;
+        v2=p[2]; // EQ type
         break;
         
       default:
