@@ -696,8 +696,10 @@ void DCCEXParser::parseOne(Print *stream, byte *com, RingStream * ringStream)
 	  return;
 	}
 
-    case '!': // ESTOP ALL  <!>
-        DCC::estopAll(); // this broadcasts speed 1(estop) and sets all reminders to speed 1.
+    case '!': // ESTOPALL  <!>
+        if (p[0]=="P"_hk) DCC::estopLock(true); // <!P>
+        else if (p[0]=="R"_hk) DCC::estopLock(false); // <!R
+        else DCC::estopAll(); // this broadcasts speed 1(estop) and sets all reminders to speed 1.
         return;
 
 #ifdef HAS_ENOUGH_MEMORY
@@ -1049,6 +1051,8 @@ bool DCCEXParser::parseZ(Print *stream, int16_t params, int16_t p[])
 
 bool DCCEXParser::parsey(Print *stream, int16_t params, int16_t p[])
 {
+    (void)stream; // unused parameter
+     
     // <y vpin PLAY track [volume]>
     // <y vpin REPEAT track [volume]>
     // <y vpin FOLDER folder>
