@@ -138,9 +138,9 @@ void setup()
 
   // Invoke any DCC++EX commands in the form "SETUP("xxxx");"" found in optional file mySetup.h.
   //  This can be used to create turnouts, outputs, sensors etc. through the normal text commands.
-  #if __has_include ( "mySetup.h")
+  #if __has_include ( "Settings/mySetup.h")
     #define SETUP(cmd) DCCEXParser::parse(F(cmd))
-    #include "mySetup.h"
+    #include "Settings/mySetup.h"
     #undef SETUP
   #endif
 
