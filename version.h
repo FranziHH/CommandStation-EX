@@ -3,7 +3,10 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.5.61 FW"
+#define VERSION "5.5.63 FW"
+// 5.5.63 - Bugfix: EXRAIL IFLOCO did not handle -1 (loco not found)
+// 5.5.62 - EXRAIL IFLOCO(list)
+//        - NEOPIXEL automatic WHITE(if available)  when red=green=blue
 // 5.5.61 - Bugfix: PCA9685 driver did not handle mux I2C addresses for writing registers
 // 5.5.60 - EXRAIL SPEEDUP(by) SLOWDOWN(by) SPEED_REL(percent)
 //        - EXRAIL ZTEST diff between cmds and test captions 
