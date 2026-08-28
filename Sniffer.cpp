@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with CommandStation.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "config.h"
+#include "Settings/config.h"
 #if defined(ARDUINO_ARCH_ESP32) && defined(MOTOR_SHIELD_TYPE)
 #include "Sniffer.h"
 #include "DIAG.h"

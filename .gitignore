@@ -8,7 +8,7 @@ Release/*
 .git_hub/
 .pio/
 .vscode/
-my*.ini
+my*.ini*
 config.h
 *.config.h
 config.wifi.h
