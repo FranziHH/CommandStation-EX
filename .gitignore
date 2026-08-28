@@ -8,6 +8,7 @@ Release/*
 .git_hub/
 .pio/
 .vscode/
+my*.ini
 config.h
 *.config.h
 config.wifi.h
@@ -15,7 +16,8 @@ mySetup.cpp
 myHal.cpp
 myFilter.cpp
 my*.h
-!my*.example*.h
+my*.html.cpp
+!my*.example.h
 compile_commands.json
 newcode.txt.old
 UserAddin.txt
