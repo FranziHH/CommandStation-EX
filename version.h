@@ -3,8 +3,12 @@
 
 #include "StringFormatter.h"
 
-#define VERSION "5.9.2 FW"
-// 5.9.2  - Fixed null turnout descripotions and ifthrown state
+#define VERSION "5.9.4 FW"
+// 5.9.4  - STM32 cleanup
+// 5.9.3  - Minor bug fixes and improvements
+//        - Updated documentation for new features
+//        - POM for accessory decoders
+// 5.9.2  - Fixed null turnout descriptions and ifthrown state
 // 5.9.1  - Added LED_SIGNAL exrail macro
 // 5.9.0  - Major update for Nodes
 //        - Removed AVR support
